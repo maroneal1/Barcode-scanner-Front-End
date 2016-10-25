@@ -5,6 +5,14 @@ To use this the data submitted needs to be in JSON for testing purposes use POST
 Seths URL is /questions/addlocation
 
 
+Kyles URL is /questions/questionsbyuser
+#note this is not filtered
+
+
+
+Below is example JSON. 
+
+
 {
 	 	"loc_barcode_num": 56,
 		 	"items":

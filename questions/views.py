@@ -53,8 +53,8 @@ def add(request):
 @csrf_exempt
 def questionsbyuser(request):
 	if request.method == 'GET':
-		print (Question.objects.all())
-		return HttpResponse(Question.objects.all()) # need to filter by user 
+		print (Location.objects.all())
+		return HttpResponse(Location.objects.all()) # need to filter by user 
 	
 	elif request.method == 'POST':
 		user=request.POST["user"]
