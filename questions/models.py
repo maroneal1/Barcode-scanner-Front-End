@@ -21,7 +21,7 @@ class Location(models.Model):
 	loc_barcode_num = models.IntegerField(default=0)
 	loc_name = models.CharField(max_length=200)#floor1basement
 	def __str__(self):
-		return self.loc_name + str(barcode_num)
+		return self.loc_name + str(self.loc_barcode_num) + str(self.item_set.all()) + str(self.question_set.all()) 
 	#questions_loc=models.ForeignKey( Question, on_delete=models.CASCADE)
 	#items=models.ForeignKey( Item, on_delete=models.CASCADE)
 	#questions,
@@ -40,7 +40,7 @@ class Item(models.Model):
 	#questions=models.ForeignKey( Question, on_delete=models.CASCADE)
 	loc_ass=models.ForeignKey( Location, on_delete=models.CASCADE)
 	def __str__(self):
-		return self.item_barcode_num
+		return str(self.item_barcode_num)
 
 
 class Question(models.Model):
