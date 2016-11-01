@@ -8,7 +8,7 @@ import json
 from django.utils import timezone
 from questions.models import Question,Choice,Item,Location
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render, redirect 
 from django.template import Context, loader
 #https://docs.djangoproject.com/en/1.10/intro/tutorial03/
 
@@ -27,11 +27,17 @@ def cors_json(resp):
 
 @csrf_exempt
 def index(request):
-    return render_to_response('app/index.html')
+	return redirect(resdevices)
+    #return render_to_response('app/index.html')
    # return HttpResponse("QUESTIONS PAGE")
 #security error fix later
 
 #SETHS
+
+
+def devices(request):
+	
+	return render(request,'questions/devices.html',devices)
 
 @csrf_exempt
 def addlocation(request):
@@ -73,6 +79,6 @@ def questionsbyuser(request):
 		#INSTEAD OF ALL FILTER BY USER
 		#filtered_items=Location.objects.filter(item__user_assigned="test")
 		filtered_items=Location.objects.filter(item__user_assigned=user)
-		print filtered_items, "FILTERED"
+		#print filtered_items, "FILTERED"
 		return cors_json({'data': map (Location.get_json_object, filtered_items)}) 
 	
