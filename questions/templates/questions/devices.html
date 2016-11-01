@@ -1,5 +1,13 @@
 {% extends 'questions/base.html' %}
 
 {% block body %}
-    Hello wellcone to request devices
+    High low wellcone to devices
+
+    <ul>
+    {% for device in devices %}
+
+        <li>{{device.item_name}} of type {{device.item_type}}</li>
+    {% endfor %}
+    </ul>
+
 {% endblock %}

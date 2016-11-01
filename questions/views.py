@@ -38,8 +38,9 @@ def index(request):
 
 
 def devices(request):
-	devices = Item.objects.all()
-	return render(request,'questions/devices.html',devices)
+	dev = Item.objects.all()
+	items = {"devices":dev}
+	return render(request,'questions/devices.html',items)
 
 @csrf_exempt
 def addlocation(request):
@@ -65,7 +66,7 @@ def addlocation(request):
 	
 def add(request):
 	if request.method == 'GET':
-#		return HttpResponse(Question.objects.all()) # need to filter by user 
+		return HttpResponse(Question.objects.all()) # need to filter by user 
 		taco=3
 		#do nothing. 
 	elif request.method == 'POST':
