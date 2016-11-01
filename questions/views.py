@@ -1,4 +1,7 @@
 from django.http import HttpResponse
+from django.http import JsonResponse
+from django.shortcuts import render_to_response
+
 import json
 
 # Create your views here.
@@ -8,8 +11,22 @@ from django.views.decorators.csrf import csrf_exempt
 #https://docs.djangoproject.com/en/1.10/intro/tutorial03/
 
 
+
+
+
+
+def cors_json(resp):
+ 	print resp
+	r = JsonResponse(resp)
+	r['Access-Control-Allow-Origin'] = '*'
+	r['Access-Control-Allow-Methods'] = "GET"
+	r['Access-Control-Allow-Headers'] = 'X-Requested-With,content-type'
+	return r
+
+@csrf_exempt
 def index(request):
-    return HttpResponse("QUESTIONS PAGE")
+    return render_to_response('app/index.html')
+   # return HttpResponse("QUESTIONS PAGE")
 #security error fix later
 
 #SETHS
@@ -17,16 +34,14 @@ def index(request):
 @csrf_exempt
 def addlocation(request):
 	if request.method == 'POST':
-
 		received_json_data=json.loads(request.body)
-		print (received_json_data)
+		#print (received_json_data)
 		
 		loc_barcode=received_json_data["loc_barcode_num"]
 		items=received_json_data["items"]
 		questions_for_loc_only=received_json_data["loc_questions"]
 		
 		location=Location.objects.create(loc_barcode_num=loc_barcode)
-		
 		
 		for item in items:
 			sql_item= location.item_set.create(item_barcode_num=item["barcode_num"], item_type=item["item_type"])
@@ -35,9 +50,10 @@ def addlocation(request):
 			location.item_set.add(sql_item)
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest, pub_date=timezone.now())
-
-		print (Location.objects.all())
-		return HttpResponse(request.POST)
+	        location.save()
+		print (location, "location is printed")
+		return cors_json({'data': location.get_json_object()}) 
+		#return HttpResponse(request.POST) 
 	
 def add(request):
 	if request.method == 'GET':
