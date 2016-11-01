@@ -33,7 +33,7 @@ class Location(models.Model):
 		ret["barcode_num"]=self.loc_barcode_num
 		ret["loc_barcode_name"]=self.loc_name
 		ret["items"]=map(access_lower_object_json, self.item_set.all())
-		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
+                ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
 		return str(self.loc_barcode_num)
