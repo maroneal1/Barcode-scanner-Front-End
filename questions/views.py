@@ -44,16 +44,13 @@ def addlocation(request):
 		location=Location.objects.create(loc_barcode_num=loc_barcode)
 		
 		for item in items:
-			sql_item= location.item_set.create(item_barcode_num=item["barcode_num"], item_type=item["item_type"])
+			sql_item= location.item_set.create(item_barcode_num=item["barcode_num"], item_type=item["item_type"], admin=item["admin"], user_assigned=item["user_assigned"])
 			for question in item["questions"]:
 				q= sql_item.question_set.create(question_text=question, pub_date=timezone.now())
 			location.item_set.add(sql_item)
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest, pub_date=timezone.now())
-	        location.save()
-		print (location, "location is printed")
 		return cors_json({'data': location.get_json_object()}) 
-		#return HttpResponse(request.POST) 
 	
 def add(request):
 	if request.method == 'GET':

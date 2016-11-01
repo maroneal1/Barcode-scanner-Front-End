@@ -29,7 +29,6 @@ class Location(models.Model):
 	def get_json_object(self):
 		def access_lower_object_json(key):
 			return key.get_json_object()
-			
 		ret={}
 		ret["barcode_num"]=self.loc_barcode_num
 		ret["items"]=map(access_lower_object_json, self.item_set.all())
@@ -37,7 +36,9 @@ class Location(models.Model):
 		return ret
 	def __str__(self):
 		return str(self.loc_barcode_num)
-#self.loc_name + str(self.loc_barcode_num) + str(self.item_set.all()) + str(self.question_set.all()) 
+	
+	
+	#self.loc_name + str(self.loc_barcode_num) + str(self.item_set.all()) + str(self.question_set.all()) 
 
 		
 	#questions_loc=models.ForeignKey( Question, on_delete=models.CASCADE)
@@ -58,11 +59,14 @@ class Item(models.Model):
 	#questions=models.ForeignKey( Question, on_delete=models.CASCADE)
 	loc_ass=models.ForeignKey( Location, on_delete=models.CASCADE)
 	def get_json_object(self):
+		def access_lower_object_json(key):
+			return key.get_json_object()
 		ret ={}
 		ret["barcode_num"]=self.item_barcode_num
 		ret["item_type"]=self.item_type
 		ret["user_assigned"]=self.user_assigned
 		ret["admin"]=self.admin
+		#ret["questions"]=access_lower_object(self.)
 		return ret
 	def __str__(self):
 		return str(self.item_barcode_num)
