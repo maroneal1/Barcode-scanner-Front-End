@@ -1,0 +1,36 @@
+{% extends 'questions/base.html' %}
+{% load staticfiles %}
+{% block sheet %}{% static 'questions/add_location.css' %}{% endblock %}
+{% block body %}
+        <div class="container">
+            <form>
+              <div class="form-group">
+                <label for="location ID">Location Barcode ID</label>
+                <input type="text" class="form-control" id="locationID" placeholder="Barcode ID">
+              </div>
+              <div class="form-group">
+                <label for="description">Location Description</label>
+                <input type="text" class="form-control" id="location_descrip" placeholder="Location Description">
+              </div>
+              <div class="form-group form-items">
+                <div class = "item">
+                    <label for="description">Item</label>
+                    <input type="text" class="form-control" placeholder="Item Description">
+                    <div class="form-group item-questions">
+                        <label for="question">Question</label>
+                        <input type="text" class="form-control item-question" placeholder="Question">
+                    </div>
+                    <button type="button" class="btn btn-primary add-question">
+                        Add Question
+                    </button>
+                </div>
+              </div>
+              <button type="button" class="btn btn-primary add-item">
+                Add Another Item
+              </button>
+              <button type="submit" class="btn btn-primary">
+                Submit
+              </button>
+            </form>
+        </div>
+{% endblock %}

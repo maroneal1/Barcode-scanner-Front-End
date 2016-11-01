@@ -1,0 +1,30 @@
+form {
+    text-align: center;
+    border: solid 1px black;
+    padding: 2em 5em 2em 5em;
+}
+
+.container {
+    max-width: 640px;
+}
+
+label {
+    font-size: 16px;
+}
+
+.item .form-control {
+    margin-bottom: 1em;
+}
+
+.form-items {
+    margin-left: 3em;
+}
+
+.item-question {
+    margin-left: 3em;
+}
+
+.add-question {
+    display: block;
+    margin-bottom: 1em;
+}
