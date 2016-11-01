@@ -10,6 +10,8 @@ from questions.models import Question,Choice,Item,Location
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect 
 from django.template import Context, loader
+
+from .models import Question,Location,Item,Choice
 #https://docs.djangoproject.com/en/1.10/intro/tutorial03/
 
 
@@ -36,7 +38,7 @@ def index(request):
 
 
 def devices(request):
-	
+	devices = Item.objects.all()
 	return render(request,'questions/devices.html',devices)
 
 @csrf_exempt
