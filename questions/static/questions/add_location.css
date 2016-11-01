@@ -1,18 +1,22 @@
 form {
     text-align: center;
-    border: solid 1px black;
+    border: solid 3px black;
     padding: 2em 5em 2em 5em;
 }
 
 .container {
-    max-width: 640px;
+    max-width: 800px;
 }
 
 label {
     font-size: 16px;
 }
 
-.item .form-control {
+.form-control {
+    margin-bottom: 1em;
+}
+
+.item-input {
     margin-bottom: 1em;
 }
 
@@ -20,11 +24,16 @@ label {
     margin-left: 3em;
 }
 
-.item-question {
-    margin-left: 3em;
+.loc-question {
+    margin-bottom: 1em;
 }
 
 .add-question {
+    display: block;
+    margin-bottom: 1em;
+}
+
+.add-loc-question {
     display: block;
     margin-bottom: 1em;
 }
