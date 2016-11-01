@@ -18,7 +18,7 @@ from django.template import Context, loader
 
 
 def cors_json(resp):
- 	print resp
+	#print resp
 	r = JsonResponse(resp)
 	r['Access-Control-Allow-Origin'] = '*'
 	r['Access-Control-Allow-Methods'] = "GET"
