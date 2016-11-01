@@ -31,6 +31,7 @@ class Location(models.Model):
 			return key.get_json_object()
 		ret={}
 		ret["barcode_num"]=self.loc_barcode_num
+		ret["loc_barcode_name"]=self.loc_name
 		ret["items"]=map(access_lower_object_json, self.item_set.all())
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
@@ -38,25 +39,17 @@ class Location(models.Model):
 		return str(self.loc_barcode_num)
 	
 	
-	#self.loc_name + str(self.loc_barcode_num) + str(self.item_set.all()) + str(self.question_set.all()) 
 
 		
-	#questions_loc=models.ForeignKey( Question, on_delete=models.CASCADE)
-	#items=models.ForeignKey( Item, on_delete=models.CASCADE)
-	#questions,
-	#items
-	#admins
-	#human readbale field 
+
 
 
 class Item(models.Model):
 	item_name = models.CharField(max_length=200)#example fire equitunisher
-	item_barcode_num=models.IntegerField(default=0)
-	#loc_barcode_num=models.IntegerField(default=0)
+	item_barcode_num = models.IntegerField(default=0)
 	item_type = models.CharField(max_length=200)
 	user_assigned = models.CharField(max_length=200) 
 	admin = models.CharField(max_length=200) #should actually be payroll id 
-	#questions=models.ForeignKey( Question, on_delete=models.CASCADE)
 	loc_ass=models.ForeignKey( Location, on_delete=models.CASCADE)
 	def get_json_object(self):
 		def access_lower_object_json(key):
@@ -66,7 +59,7 @@ class Item(models.Model):
 		ret["item_type"]=self.item_type
 		ret["user_assigned"]=self.user_assigned
 		ret["admin"]=self.admin
-		#ret["questions"]=access_lower_object(self.)
+		ret["questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
 		return str(self.item_barcode_num)

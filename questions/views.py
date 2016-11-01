@@ -40,10 +40,11 @@ def addlocation(request):
 		#print (received_json_data)
 		
 		loc_barcode=received_json_data["loc_barcode_num"]
+		loc_barcode_name=received_json_data["loc_barcode_name"]
 		items=received_json_data["items"]
 		questions_for_loc_only=received_json_data["loc_questions"]
 		
-		location=Location.objects.create(loc_barcode_num=loc_barcode)
+		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_barcode_name)
 		
 		for item in items:
 			sql_item= location.item_set.create(item_barcode_num=item["barcode_num"], item_type=item["item_type"], admin=item["admin"], user_assigned=item["user_assigned"])
@@ -52,7 +53,7 @@ def addlocation(request):
 			location.item_set.add(sql_item)
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest, pub_date=timezone.now())
-		return cors_json({'data': location.get_json_object()}) 
+		return cors_json({'data': location.get_json_object()}) #THIS SHOULD JUST SAY GOOODBYE OR GOOD DATA 
 	
 def add(request):
 	if request.method == 'GET':
@@ -67,11 +68,11 @@ def add(request):
 #KYLES
 @csrf_exempt
 def questionsbyuser(request):
-	if request.method == 'GET':
-		print (Location.objects.all())
-		return HttpResponse(Location.objects.all()) # need to filter by user 
-	
-	elif request.method == 'POST':
+	if request.method == 'POST':
 		user=request.POST["user"]
-		#field has to be posted as user
-		return HttpResponse(Question.objects.all()) # need to filter by user 
+		#INSTEAD OF ALL FILTER BY USER
+		#filtered_items=Location.objects.filter(item__user_assigned="test")
+		filtered_items=Location.objects.filter(item__user_assigned=user)
+		print filtered_items, "FILTERED"
+		return cors_json({'data': map (Location.get_json_object, filtered_items)}) 
+	
