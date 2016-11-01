@@ -1,3 +1,4 @@
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 import json
 
@@ -5,11 +6,15 @@ import json
 from django.utils import timezone
 from questions.models import Question,Choice,Item,Location
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render_to_response
+from django.template import Context, loader
 #https://docs.djangoproject.com/en/1.10/intro/tutorial03/
 
 
+@csrf_exempt
 def index(request):
-    return HttpResponse("QUESTIONS PAGE")
+	return render(request, 'questions/location_form.html', {})
+    #return HttpResponse("QUESTIONS PAGE")
 #security error fix later
 
 #SETHS
@@ -20,14 +25,14 @@ def addlocation(request):
 
 		received_json_data=json.loads(request.body)
 		print (received_json_data)
-		
+
 		loc_barcode=received_json_data["loc_barcode_num"]
 		items=received_json_data["items"]
 		questions_for_loc_only=received_json_data["loc_questions"]
-		
+
 		location=Location.objects.create(loc_barcode_num=loc_barcode)
-		
-		
+
+
 		for item in items:
 			sql_item= location.item_set.create(item_barcode_num=item["barcode_num"], item_type=item["item_type"])
 			for question in item["questions"]:
@@ -38,12 +43,12 @@ def addlocation(request):
 
 		print (Location.objects.all())
 		return HttpResponse(request.POST)
-	
+
 def add(request):
 	if request.method == 'GET':
-#		return HttpResponse(Question.objects.all()) # need to filter by user 
+#		return HttpResponse(Question.objects.all()) # need to filter by user
 		taco=3
-		#do nothing. 
+		#do nothing.
 	elif request.method == 'POST':
 		q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
 		q.save()
@@ -54,9 +59,9 @@ def add(request):
 def questionsbyuser(request):
 	if request.method == 'GET':
 		print (Location.objects.all())
-		return HttpResponse(Location.objects.all()) # need to filter by user 
-	
+		return HttpResponse(Location.objects.all()) # need to filter by user
+
 	elif request.method == 'POST':
 		user=request.POST["user"]
 		#field has to be posted as user
-		return HttpResponse(Question.objects.all()) # need to filter by user 
+		return HttpResponse(Question.objects.all()) # need to filter by user
