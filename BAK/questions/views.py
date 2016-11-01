@@ -8,8 +8,6 @@ import json
 from django.utils import timezone
 from questions.models import Question,Choice,Item,Location
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render_to_response
-from django.template import Context, loader
 #https://docs.djangoproject.com/en/1.10/intro/tutorial03/
 
 
@@ -18,7 +16,7 @@ from django.template import Context, loader
 
 
 def cors_json(resp):
-	#print resp
+ 	print resp
 	r = JsonResponse(resp)
 	r['Access-Control-Allow-Origin'] = '*'
 	r['Access-Control-Allow-Methods'] = "GET"
