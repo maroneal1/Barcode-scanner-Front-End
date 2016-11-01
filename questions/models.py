@@ -14,14 +14,33 @@ from django.db import models
 TOP DOWN APPROACH 
 '''
 
+
+
+#ADD JSON REPONSE WITH DJANGO
+
+
+
 #Question is here do we want admins assigned to locations, 
 #like should locations be another class? 
 #dont think we need. 
 class Location(models.Model):
 	loc_barcode_num = models.IntegerField(default=0)
-	loc_name = models.CharField(max_length=200)#floor1basement
+	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
+	def get_json_object(self):
+		def access_lower_object_json(key):
+			return key.get_json_object()
+		ret={}
+		ret["barcode_num"]=self.loc_barcode_num
+		ret["items"]=map(access_lower_object_json, self.item_set.all())
+                ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
+		return ret
 	def __str__(self):
-		return self.loc_name + str(self.loc_barcode_num) + str(self.item_set.all()) + str(self.question_set.all()) 
+		return str(self.loc_barcode_num)
+	
+	
+	#self.loc_name + str(self.loc_barcode_num) + str(self.item_set.all()) + str(self.question_set.all()) 
+
+		
 	#questions_loc=models.ForeignKey( Question, on_delete=models.CASCADE)
 	#items=models.ForeignKey( Item, on_delete=models.CASCADE)
 	#questions,
@@ -39,6 +58,16 @@ class Item(models.Model):
 	admin = models.CharField(max_length=200) #should actually be payroll id 
 	#questions=models.ForeignKey( Question, on_delete=models.CASCADE)
 	loc_ass=models.ForeignKey( Location, on_delete=models.CASCADE)
+	def get_json_object(self):
+		def access_lower_object_json(key):
+			return key.get_json_object()
+		ret ={}
+		ret["barcode_num"]=self.item_barcode_num
+		ret["item_type"]=self.item_type
+		ret["user_assigned"]=self.user_assigned
+		ret["admin"]=self.admin
+		#ret["questions"]=access_lower_object(self.)
+		return ret
 	def __str__(self):
 		return str(self.item_barcode_num)
 
@@ -49,6 +78,10 @@ class Question(models.Model):
 	#answers= models.ForeignKey( Choice, on_delete=models.CASCADE) #posted by users 
 	item_assoc=models.ForeignKey( Item, on_delete=models.CASCADE, null=True)
 	questions_loc=models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
+	def get_json_object(self):
+		ret ={}
+		ret["question_text"]=self.question_text
+		return ret
 	def __str__(self):
 		return self.question_text
 
