@@ -42,6 +42,11 @@ def devices(request):
 	items = {"devices":dev}
 	return render(request,'questions/devices.html',items)
 
+def locations(request):
+	dev = Location.objects.all()
+	items = {"Location":dev}
+	return render(request,'questions/location.html',items)
+
 def locationsadd(request):
 	return render(request, 'questions/location_form.html', {})
 
