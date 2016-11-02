@@ -2,35 +2,95 @@
 {% load staticfiles %}
 {% block sheet %}{% static 'questions/add_location.css' %}{% endblock %}
 {% block body %}
-        <div class="container">
-            <form>
-              <div class="form-group">
-                <label for="location ID">Location Barcode ID</label>
-                <input type="text" class="form-control" id="locationID" placeholder="Barcode ID">
-              </div>
-              <div class="form-group">
-                <label for="description">Location Description</label>
-                <input type="text" class="form-control" id="location_descrip" placeholder="Location Description">
-              </div>
-              <div class="form-group form-items">
-                <div class = "item">
-                    <label for="description">Item</label>
-                    <input type="text" class="form-control" placeholder="Item Description">
-                    <div class="form-group item-questions">
-                        <label for="question">Question</label>
-                        <input type="text" class="form-control item-question" placeholder="Question">
-                    </div>
-                    <button type="button" class="btn btn-primary add-question">
-                        Add Question
-                    </button>
-                </div>
-              </div>
-              <button type="button" class="btn btn-primary add-item">
-                Add Another Item
-              </button>
-              <button type="submit" class="btn btn-primary">
-                Submit
-              </button>
-            </form>
+<div class="container">
+    <form>
+        <div class="form-group">
+            <label for="admin">Administrator</label>
+            <input type="text" class="form-control" id="admin" placeholder="Administrator">
         </div>
+        <div class="form-group">
+            <label for="location ID">Location Information</label>
+            <input type="text" class="form-control" id="locationID" placeholder="Location Barcode">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="location_description" placeholder="Location Description">
+        </div>
+        <div class="form-group location-questions">
+            <label for="location ID">Location Questions</label>
+            <div class=loc-question>
+              <input type="text" class="form-control location-question" placeholder="Question">
+            </div>
+        </div>
+        <button type="button" onclick="add_location_question($(this))" class="btn btn-primary add-loc-question">
+                Add Location Question
+        </button>
+        <div class="form-group form-items">
+            <div class="item">
+                <label for="description">Item</label>
+                <input type="text" class="form-control" id="itemID" placeholder="Item Barcode">
+                <input type="text" class="form-control" id="itemType" placeholder="Item Description">
+                <input type="text" class="form-control" id="assignee" placeholder="User Assigned">
+                <div class="item-questions">
+                    <label for="question">Item Questions</label>
+                    <div class="item-input">
+                      <input type="text" class="form-control item-question" placeholder="Question">
+                    </div>
+                </div>
+                <button type="button" onclick="add_question_field($(this))" class="btn btn-primary add-question">
+                        Add Item Question
+                </button>
+            </div>
+        </div>
+        <button type="button" onclick="add_item_field()" class="btn btn-primary add-item">
+                Add Another Item
+        </button>
+        <button type="button" onclick="submit_form()" class="btn btn-primary">
+                Submit
+        </button>
+    </form>
+</div>
+<script>
+    function submit_form() {
+        var form_data = {};
+        var items = [];
+        form_data['loc_barcode_name'] = $('#location_description').val();
+        form_data['loc_barcode_num'] = $('#locationID').val();
+
+        $('.form-items').children('.item').each(function() {
+            var item = {};
+            item['barcode_num'] = $(this).find('#itemID').val();
+            item['item_type'] = $(this).find('#itemType').val();
+            item['user_assigned'] = $(this).find('#assignee').val();
+            item['admin'] = $('#admin').val();
+            item['questions'] = [];
+            $(this).find('.item-questions').children('.item-input').each(function() {
+                item['questions'].push($(this).find('.item-question').val());
+            });
+            items.push(item);
+        });
+        form_data['items'] = items;
+
+        var loc_questions = [];
+        $('.location-questions').children('.loc-question').each(function() {
+            loc_questions.push($(this).find('.location-question').val());
+        });
+        form_data['loc_questions'] = loc_questions;
+
+        console.log(JSON.stringify(form_data));
+
+        $.ajax({
+            url: "http://127.0.0.1:8000/questions/addlocation/",
+            type: "POST",
+            data: JSON.stringify(form_data),
+            contentType: "application/json",
+            success: function() {
+                alert('Data submitted successfully!');
+                location.reload();
+            },
+            error: function() {
+                alert('Data could not be submitted.');
+            }
+        });
+    };
+</script>
 {% endblock %}

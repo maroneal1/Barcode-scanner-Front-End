@@ -1,0 +1,13 @@
+{% extends 'questions/base.html' %}
+
+{% block body %}
+    High low wellcone to devices
+
+    <ul>
+    {% for loc in Location %}
+
+        <li>{{loc.loc_name}} BC={{loc.loc_barcode_num}}</li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
