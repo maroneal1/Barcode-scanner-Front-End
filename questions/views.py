@@ -64,12 +64,11 @@ def addlocation(request):
 		return cors_json({'data': location.get_json_object()}) #THIS SHOULD JUST SAY GOOODBYE OR GOOD DATA
 	
 def add(request):
-		return HttpResponse(Question.objects.all()) # need to filter by user 
-		#do nothing. 
 	if request.method == 'POST':
-		q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
-		q.save()
-		return HttpResponse("Good work homie")
+			q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
+			q.save()
+			return HttpResponse("Good work homie")
+
 
 #KYLES
 @csrf_exempt
