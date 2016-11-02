@@ -48,6 +48,8 @@ class Item(models.Model):
 	item_name = models.CharField(max_length=200)#example fire equitunisher
 	item_barcode_num = models.IntegerField(default=0)
 	item_type = models.CharField(max_length=200)
+	time_scanned=models.CharField(max_length=200, default= " ") #added
+	person_scanned=models.CharField(max_length=200, default= " ") #added
 	user_assigned = models.CharField(max_length=200) 
 	admin = models.CharField(max_length=200) #should actually be payroll id 
 	loc_ass=models.ForeignKey( Location, on_delete=models.CASCADE)
@@ -58,6 +60,7 @@ class Item(models.Model):
 		ret["barcode_num"]=self.item_barcode_num
 		ret["item_type"]=self.item_type
 		ret["user_assigned"]=self.user_assigned
+		ret["time_scanned"]=self.time_scanned
 		ret["admin"]=self.admin
 		ret["questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
@@ -68,7 +71,6 @@ class Item(models.Model):
 class Question(models.Model):
 	question_text = models.CharField(max_length=200) #field_example where is the pin? 
 	pub_date = models.DateTimeField('date published') #this is obtained from ADMIN
-	#answers= models.ForeignKey( Choice, on_delete=models.CASCADE) #posted by users 
 	item_assoc=models.ForeignKey( Item, on_delete=models.CASCADE, null=True)
 	questions_loc=models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
 	def get_json_object(self):
@@ -80,13 +82,11 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
-	##question = models.ForeignKey(Question, on_delete=models.CASCADE)
 	#above is how relationships are defined with the foreign key, each choice is related with questions 
 	choice_text = models.CharField(max_length=200)
-	scan_date_time = models.DateTimeField('datetime answered') #this is obtained from ADMIN
-	person_scanned = models.CharField(max_length=200)
+	#scan_date_time = models.DateTimeField('datetime answered') #this is obtained from ADMIN
+	#person_scanned = models.CharField(max_length=200)
 	question_associated_with= models.ForeignKey( Question, on_delete=models.CASCADE) #posted by users 
-	##votes = models.IntegerField(default=0)
 	def __str__(self):
 		return self.choice_text
 

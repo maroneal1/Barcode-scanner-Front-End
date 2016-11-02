@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^add$', views.add, name='add'),
     url(r'^questionsbyuser$', views.questionsbyuser, name='questionsbyuser'),
     url(r'^addlocation$', views.addlocation, name='addlocation'),
+    url(r'^addanswers$', views.addanswers, name='addanswers'),
 
     ]
