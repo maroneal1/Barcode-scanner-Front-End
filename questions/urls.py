@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^location/add/$',views.locationsadd, name='locationadd'),
     url(r'^questionsbyuser/$', views.questionsbyuser, name='questionsbyuser'),
     url(r'^addlocation/$', views.addlocation, name='addlocation'),
+    url(r'^addanswers$', views.addanswers, name='addanswers'),
 
     ]
