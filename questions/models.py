@@ -51,9 +51,9 @@ class Device(models.Model):
 	admin = models.CharField(max_length=200) #should actually be payroll id
 
 class Item(models.Model):
+	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
 	item_name = device=models.ForeignKey( Device, on_delete=models.CASCADE)
 	item_barcode_num = models.IntegerField(default=0)
-	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
 	user_assigned=models.CharField(max_length=200)
 	admin=models.CharField(max_length=200) #should actually be payroll id
 
@@ -75,7 +75,7 @@ class Item(models.Model):
 class Question(models.Model):
 	question_text = models.CharField(max_length=200) #field_example where is the pin?
 	pub_date = models.DateTimeField('date published') #this is obtained from ADMIN
-	item_assoc=models.ForeignKey( Item, on_delete=models.CASCADE, null=True)
+	item_assoc=models.ForeignKey( Device, on_delete=models.CASCADE, null=True)
 	questions_loc=models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
 	def get_json_object(self):
 		ret ={}
