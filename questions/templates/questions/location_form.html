@@ -79,7 +79,7 @@
         console.log(JSON.stringify(form_data));
 
         $.ajax({
-            url: "http://127.0.0.1:8000/questions/addlocation/",
+            url: "/questions/addlocation/",
             type: "POST",
             data: JSON.stringify(form_data),
             contentType: "application/json",
