@@ -6,10 +6,14 @@
     <h2>High low wellcone to devices</h2>
 
     <ul>
-    {% for device in devices %}
-
-        <li>{{device.item_name}} of type {{device.item_type}}</li>
-    {% endfor %}
+      <ul class="list-group">
+        {% for device in devices %}
+            <a href="#" class="list-group-item">
+              {{device.item_name}}
+              <span class="text-align center pull-right">{{device.item_type}}</span>
+            </a>
+        {% endfor %}
+      </ul>
     </ul>
 
 {% endblock %}
