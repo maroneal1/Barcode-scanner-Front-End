@@ -51,8 +51,8 @@ def locationsadd(request):
 def deviceView(request,dev_pk):
 	pass
 
-def locationsadd(request,loc_pk):
-	pass
+#def locationsadd(request,loc_pk):
+#	pass
 
 @csrf_exempt
 def addlocation(request):
