@@ -49,10 +49,10 @@ def locationsadd(request):
 	return render(request, 'questions/location_form.html', {})
 
 def deviceView(request,dev_pk):
-	pass
+	return HttpResponse("<h2>  Device {} </h2>".format(dev_pk))
 
-#def locationsadd(request,loc_pk):
-#	pass
+def locationView(request,loc_pk):
+	return HttpResponse("<h2> Welcome to lacation {} </h2>".format(loc_pk))
 
 @csrf_exempt
 def addlocation(request):

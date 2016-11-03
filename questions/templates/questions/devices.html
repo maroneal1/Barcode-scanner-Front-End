@@ -8,7 +8,7 @@
     <ul>
       <ul class="list-group">
         {% for device in devices %}
-            <a href="#" class="list-group-item">
+            <a href="{% url 'questions:deviceView' device.id %}" class="list-group-item">
               {{device.item_name}}
               <span class="text-align center pull-right">{{device.item_type}}</span>
             </a>
