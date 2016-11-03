@@ -40,22 +40,17 @@ class Location(models.Model):
 	def __str__(self):
 		return str(self.loc_barcode_num)
 
-class LocDev(models.Model):
-	location=models.ForeignKey( Location, on_delete=models.CASCADE)
-	device=models.ForeignKey( Device, on_delete=models.CASCADE)
-
 class Device(models.Model):
 	device_name = models.CharField(max_length=200)
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	admin = models.CharField(max_length=200) #should actually be payroll id
-
+class LocDev(models.Model):
+	location=models.ForeignKey( Location, on_delete=models.CASCADE)
+	device=models.ForeignKey( Device, on_delete=models.CASCADE)
 class Item(models.Model):
 	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
-	item_name = device=models.ForeignKey( Device, on_delete=models.CASCADE)
 	item_barcode_num = models.IntegerField(default=0)
-	user_assigned=models.CharField(max_length=200)
-	admin=models.CharField(max_length=200) #should actually be payroll id
 
 	def get_json_object(self):
 		def access_lower_object_json(key):
@@ -63,9 +58,7 @@ class Item(models.Model):
 		ret ={}
 		ret["barcode_num"]=self.item_barcode_num
 		ret["item_type"]=self.item_type
-		ret["user_assigned"]=self.user_assigned
-		ret["time_scanned"]=self.time_scanned
-		ret["admin"]=self.admin
+
 		ret["questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
@@ -76,7 +69,6 @@ class Question(models.Model):
 	question_text = models.CharField(max_length=200) #field_example where is the pin?
 	pub_date = models.DateTimeField('date published') #this is obtained from ADMIN
 	item_assoc=models.ForeignKey( Device, on_delete=models.CASCADE, null=True)
-	questions_loc=models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
 	def get_json_object(self):
 		ret ={}
 		ret["question_text"]=self.question_text
