@@ -1,13 +1,22 @@
 {% extends 'questions/base.html' %}
 
+{% block Locations %}active{% endblock %}
+
 {% block body %}
-    High low wellcone to devices
+    <h2>High low wellcone to devices</h2>
 
-    <ul>
+<ul>
+  <ul class="list-group">
     {% for loc in Location %}
-
-        <li>{{loc.loc_name}} BC={{loc.loc_barcode_num}}</li>
+        <a href="#" class="list-group-item">
+          {{loc.0.loc_name}}
+          <span class="glyphicon {% if loc.1 > 0 %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
+          <span class="text-align center pull-right">{{loc.1}}</span>
+        </a>
     {% endfor %}
-    </ul>
+  </ul>
+</ul>
+
+
 
 {% endblock %}
