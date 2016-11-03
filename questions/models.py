@@ -39,11 +39,6 @@ class Location(models.Model):
 		return str(self.loc_barcode_num)
 
 
-
-
-
-
-
 class Item(models.Model):
 	item_name = models.CharField(max_length=200)#example fire equitunisher
 	item_barcode_num = models.IntegerField(default=0)

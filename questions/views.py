@@ -46,13 +46,26 @@ def locations(request):
     return render(request,'questions/location.html',items)
 
 def locationsadd(request):
+
 	return render(request, 'questions/location_form.html', {})
 
 def deviceView(request,dev_pk):
+
 	return HttpResponse("<h2>  Device {} </h2>".format(dev_pk))
 
 def locationView(request,loc_pk):
-	return HttpResponse("<h2> Welcome to lacation {} </h2>".format(loc_pk))
+	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
+	name = Location.objects.filter(id=loc_pk)
+	ims = Item.objects.filter(loc_ass=name)
+	inspctor = ""
+	if ims:
+		inspctor = ims[0].user_assigned
+	things = {
+	'name': name,
+	'inspctor':inspctor,
+	'items':ims
+	}
+	return render(request, 'questions/location-view.html', things)
 
 @csrf_exempt
 def addlocation(request):
