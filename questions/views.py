@@ -43,6 +43,12 @@ def locations(request):
 def locationsadd(request):
 	return render(request, 'questions/location_form.html', {})
 
+def deviceView(request,dev_pk):
+	pass
+
+def locationsadd(request,loc_pk):
+	pass
+
 @csrf_exempt
 def addlocation(request):
 	if request.method == 'POST':
