@@ -11,7 +11,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect
 from django.template import Context, loader
 
-from .models import Question,Location,Item,Choice
+
 
 def cors_json(resp):
 	r = JsonResponse(resp)
@@ -36,9 +36,14 @@ def devices(request):
 	return render(request,'questions/devices.html',items)
 
 def locations(request):
-	dev = Location.objects.all()
-	items = {"Location":dev}
-	return render(request,'questions/location.html',items)
+    loc = Location.objects.all()
+    itm = []
+    for i in loc:
+        itm.append(len(Item.objects.filter(loc_ass=i)))
+
+    items = {"Location":list(zip(loc,itm))}
+
+    return render(request,'questions/location.html',items)
 
 def locationsadd(request):
 	return render(request, 'questions/location_form.html', {})
@@ -68,7 +73,7 @@ def addlocation(request):
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest, pub_date=timezone.now())
 		return cors_json({'data': location.get_json_object()}) #THIS SHOULD JUST SAY GOOODBYE OR GOOD DATA
-	
+
 def add(request):
 	if request.method == 'POST':
 			q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
@@ -100,7 +105,7 @@ def addanswers(request):
 				person_scanned=item["person_scanned"]
 				item_questions=item["questions"]
 				item_entry=location_entry.item_set.get(item_barcode_num=item_barcode)
-				
+
 				location_entry.item_set.filter(item_barcode_num = item_barcode).update(person_scanned=person_scanned)
 				location_entry.item_set.filter(item_barcode_num = item_barcode).update(time_scanned=time_scanned)
 				for question in item_questions:

@@ -6,7 +6,7 @@ from django.views.generic import TemplateView
 app_name = "questions"
 
 urlpatterns = [
-    url(r'^$', views.devices, name='index'),
+    url(r'^$', views.locations, name='index'),
     url(r'^add/$', views.add, name='add'),
     url(r'^devices/$',views.devices,name='devices'),
     #url(r'^device/view/(?P<dev_pk>[0-9]+)/$',views.deviceView,name="deviceView"),

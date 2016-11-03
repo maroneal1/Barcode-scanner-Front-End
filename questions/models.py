@@ -11,7 +11,7 @@ from django.db import models
 # and then python manage.py migrate
 
 '''
-TOP DOWN APPROACH 
+TOP DOWN APPROACH
 '''
 
 
@@ -20,9 +20,9 @@ TOP DOWN APPROACH
 
 
 
-#Question is here do we want admins assigned to locations, 
-#like should locations be another class? 
-#dont think we need. 
+#Question is here do we want admins assigned to locations,
+#like should locations be another class?
+#dont think we need.
 class Location(models.Model):
 	loc_barcode_num = models.IntegerField(default=0)
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
@@ -37,10 +37,10 @@ class Location(models.Model):
 		return ret
 	def __str__(self):
 		return str(self.loc_barcode_num)
-	
-	
 
-		
+
+
+
 
 
 
@@ -50,8 +50,8 @@ class Item(models.Model):
 	item_type = models.CharField(max_length=200)
 	time_scanned=models.CharField(max_length=200, default= " ") #added
 	person_scanned=models.CharField(max_length=200, default= " ") #added
-	user_assigned = models.CharField(max_length=200) 
-	admin = models.CharField(max_length=200) #should actually be payroll id 
+	user_assigned = models.CharField(max_length=200)
+	admin = models.CharField(max_length=200) #should actually be payroll id
 	loc_ass=models.ForeignKey( Location, on_delete=models.CASCADE)
 	def get_json_object(self):
 		def access_lower_object_json(key):
@@ -69,7 +69,7 @@ class Item(models.Model):
 
 
 class Question(models.Model):
-	question_text = models.CharField(max_length=200) #field_example where is the pin? 
+	question_text = models.CharField(max_length=200) #field_example where is the pin?
 	pub_date = models.DateTimeField('date published') #this is obtained from ADMIN
 	item_assoc=models.ForeignKey( Item, on_delete=models.CASCADE, null=True)
 	questions_loc=models.ForeignKey(Location, on_delete=models.CASCADE, null=True)
@@ -82,11 +82,11 @@ class Question(models.Model):
 
 
 class Choice(models.Model):
-	#above is how relationships are defined with the foreign key, each choice is related with questions 
+	#above is how relationships are defined with the foreign key, each choice is related with questions
 	choice_text = models.CharField(max_length=200)
 	#scan_date_time = models.DateTimeField('datetime answered') #this is obtained from ADMIN
 	#person_scanned = models.CharField(max_length=200)
-	question_associated_with= models.ForeignKey( Question, on_delete=models.CASCADE) #posted by users 
+	question_associated_with= models.ForeignKey( Question, on_delete=models.CASCADE) #posted by users
 	def __str__(self):
 		return self.choice_text
 
