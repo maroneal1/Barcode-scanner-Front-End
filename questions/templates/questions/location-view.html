@@ -3,27 +3,31 @@
 {% block Locations %}active{% endblock %}
 
 {% block body %}
-    <h2>Location: {{name.loc_name}}</h2>
-    <h4>Owner: {{inspctor}} </h4>
+    <h2>Location: {{location.loc_name}} <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></h2>
+    <h4>Owner: {{location.user_assigned}} </h4>
 <div class="card-block">
 <div class="row">
 <div class="col-sm-3 col-sm-offset-1"> Device name</div>
-<div class="col-sm-3 "> Decice Type</div>
-<div class="col-sm-3 "> Barcode</div>
+<div class="col-sm-3 "> Device Type</div>
+<div class="col-sm-3 "> Manufacturer</div>
+<div class="col-sm-2 "> Model Number</div>
 </div>
 <ul>
   <ul class="list-group">
-    {% for ims in items %}
+    {% for ims in devices %}
     <div class="row">
         <a href="#" class="list-group-item">
-          <div class="col-sm-3"> {{ims.item_name}} </div>
+          <div class="col-sm-3"> {{ims.device_name}} </div>
           <div class="col-sm-3">
-          <span class="text-align center ">{{ims.item_name}}</span>
+          {{ims.type_equip}}
           </div>
           <div class="col-sm-3">
-          <span class="text-align center ">{{ims.item_barcode_num}}</span>
+          {{ims.manufacturer}}
           </div>
-          <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <div class="col-sm-3">
+            {{ims.model_number}}
+          </div>
+          <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
         </a>
     </div>
     {% endfor %}

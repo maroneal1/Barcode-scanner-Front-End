@@ -30,8 +30,8 @@ class Location(models.Model):
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
-	
-	
+
+
 	def get_json_object(self):
 		def access_lower_object_json(key):
 			return key.get_json_object()
@@ -84,7 +84,7 @@ class Question(models.Model):
 		ret["question_text"]=self.question_text
 		return ret
 	def __str__(self):
-		return self.question_text
+		return str((self.question_text, self.pk))
 
 
 class Choice(models.Model):
