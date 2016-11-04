@@ -45,9 +45,11 @@ class Device(models.Model):
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	admin = models.CharField(max_length=200) #should actually be payroll id
+
 class LocDev(models.Model):
 	location=models.ForeignKey( Location, on_delete=models.CASCADE)
 	device=models.ForeignKey( Device, on_delete=models.CASCADE)
+
 class Item(models.Model):
 	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
 	item_barcode_num = models.IntegerField(default=0)
