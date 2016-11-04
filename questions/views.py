@@ -92,6 +92,19 @@ def addlocation(request):
 	if request.method == 'POST':
 		received_json_data=json.loads(request.body)
 		loc_barcode=received_json_data["loc_barcode_num"]
+		loc_name=received_json_data["loc_name"]
+		questions_for_loc_only=received_json_data["loc_questions"]
+		devices_to_add=received_json_data["devices_to_add"]
+		
+		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name)
+		
+		for locquest in questions_for_loc_only:
+			location.question_set.create(question_text=locquest)
+		
+		
+		'''
+		received_json_data=json.loads(request.body)
+		loc_barcode=received_json_data["loc_barcode_num"]
 		loc_barcode_name=received_json_data["loc_barcode_name"]
 		items=received_json_data["items"]
 		questions_for_loc_only=received_json_data["loc_questions"]
@@ -106,7 +119,7 @@ def addlocation(request):
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest, pub_date=timezone.now())
 		return cors_json({'data': location.get_json_object()}) #THIS SHOULD JUST SAY GOOODBYE OR GOOD DATA
-
+		'''
 def add(request):
 	if request.method == 'POST':
 			q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
