@@ -32,12 +32,7 @@ def devices(request):
 
 def locations(request):
     loc = Location.objects.all()
-    itm = []
-    for i in loc:
-        itm.append(len(LocDev.objects.filter(location=i)))
-
-    items = {"Location":list(zip(loc,itm))}
-
+    items = {"Location":loc,}
     return render(request,'questions/location.html',items)
 
 def locationsadd(request):
@@ -65,9 +60,6 @@ def locationView(request,loc_pk):
 		#devansers.append(Choice.object.filter(device))
 	things = {
 	'location': location,
-	'lcoansers':lcoansers,
-	'devices':device,
-	#'devansers':devansers
 	}
 	return render(request, 'questions/location-view.html', things)
 
