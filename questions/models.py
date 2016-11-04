@@ -48,8 +48,9 @@ class Device(models.Model):
 	device_name = models.CharField(max_length=200) #fireqtinquisher
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
-	type = models.CharField(max_length=200) #fireqtinquisher
-	
+	admin = models.CharField(max_length=200) #should actually be payroll id
+	def __str__(self):
+		return str(self.device_name)
 
 class LocDev(models.Model):
 	location=models.ForeignKey( Location, on_delete=models.CASCADE)
@@ -76,6 +77,7 @@ class Question(models.Model):
 	question_text = models.CharField(max_length=200) #field_example where is the pin?
 	#pub_date = models.DateTimeField('date published') #this is obtained from ADMIN
 	item_assoc=models.ForeignKey( Device, on_delete=models.CASCADE, null=True)
+	location_assoc=models.ForeignKey( Location, on_delete=models.CASCADE, null=True)
 	def get_json_object(self):
 		ret ={}
 		ret["question_text"]=self.question_text
