@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^location/view/(?P<loc_pk>[0-9]+)/$',views.locationView,name="locationView"),
     url(r'^questionsbyuser/$', views.questionsbyuser, name='questionsbyuser'),
     url(r'^addlocation/$', views.addlocation, name='addlocation'),
+    url(r'^adddevice/$', views.adddevice, name='adddevice'),
     url(r'^addanswers$', views.addanswers, name='addanswers'),
 
     ]

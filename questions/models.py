@@ -23,11 +23,15 @@ TOP DOWN APPROACH
 #like should locations be another class?
 #dont think we need.
 
+
+#MAKE THE BARCODE_NUM UNIQUE
 class Location(models.Model):
 	loc_barcode_num = models.IntegerField(default=0)
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
+	
+	
 	def get_json_object(self):
 		def access_lower_object_json(key):
 			return key.get_json_object()
@@ -41,7 +45,7 @@ class Location(models.Model):
 		return str(self.loc_barcode_num)
 
 class Device(models.Model):
-	device_name = models.CharField(max_length=200)
+	device_name = models.CharField(max_length=200) #fireqtinquisher
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	admin = models.CharField(max_length=200) #should actually be payroll id
@@ -71,7 +75,7 @@ class Item(models.Model):
 
 class Question(models.Model):
 	question_text = models.CharField(max_length=200) #field_example where is the pin?
-	pub_date = models.DateTimeField('date published') #this is obtained from ADMIN
+	#pub_date = models.DateTimeField('date published') #this is obtained from ADMIN
 	item_assoc=models.ForeignKey( Device, on_delete=models.CASCADE, null=True)
 	location_assoc=models.ForeignKey( Location, on_delete=models.CASCADE, null=True)
 	def get_json_object(self):
@@ -87,8 +91,8 @@ class Choice(models.Model):
 	choice_text = models.CharField(max_length=200)
 	time_scanned=models.CharField(max_length=200, default= " ")
 	person_scanned=models.CharField(max_length=200, default= " ")
-	question= models.ForeignKey( Question, on_delete=models.CASCADE) #posted by users
-	location= models.ForeignKey( Location, on_delete=models.CASCADE) #posted by users
+	question= models.ForeignKey( Question, on_delete=models.CASCADE, null=True) #posted by users
+	location= models.ForeignKey( Location, on_delete=models.CASCADE, null=True) #posted by users
 	def __str__(self):
 		return self.choice_text
 
