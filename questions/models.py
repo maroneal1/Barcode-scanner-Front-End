@@ -48,7 +48,8 @@ class Device(models.Model):
 	device_name = models.CharField(max_length=200) #fireqtinquisher
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
-	admin = models.CharField(max_length=200) #should actually be payroll id
+#	admin = models.CharField(max_length=200) #should actually be payroll id
+	type_equip = models.CharField(max_length=200)
 	def __str__(self):
 		return str(self.device_name)
 
