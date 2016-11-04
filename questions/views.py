@@ -6,7 +6,7 @@ import json
 
 # Create your views here.
 from django.utils import timezone
-from questions.models import Question,Choice,Item,Location
+from questions.models import Question,Choice,Item,Location,Device
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect
 from django.template import Context, loader
@@ -23,11 +23,6 @@ def cors_json(resp):
 @csrf_exempt
 def index(request):
 	return redirect(resdevices)
-    #return render_to_response('app/index.html')
-   # return HttpResponse("QUESTIONS PAGE")
-#security error fix later
-
-#SETHS
 
 
 def devices(request):
@@ -66,6 +61,31 @@ def locationView(request,loc_pk):
 	'items':ims
 	}
 	return render(request, 'questions/location-view.html', things)
+
+#SETHS
+
+#URL TO POST DEVICE TO, creates questions there 
+#GETDEVICES URL-> send key from DB. 
+
+
+@csrf_exempt
+def adddevice(request):
+	if request.method == 'POST':
+		received_json_data=json.loads(request.body)
+		device_name=received_json_data["device_name"]
+		manu=received_json_data["manu"]
+		type=received_json_data["type"]
+		model_number=received_json_data["model_number"]
+		questions_for_the_device=received_json_data["questions"]
+		
+		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type=type, model_number=model_number)
+		for question in questions_for_the_device:
+			new_device.question_set.create(question_text=question)
+		return HttpResponse("Good work homie")
+		
+	
+
+
 
 @csrf_exempt
 def addlocation(request):
