@@ -74,11 +74,12 @@ def adddevice(request):
 		received_json_data=json.loads(request.body)
 		device_name=received_json_data["device_name"]
 		manu=received_json_data["manu"]
-		type=received_json_data["type"]
+		type_equip=received_json_data["type"]
 		model_number=received_json_data["model_number"]
 		questions_for_the_device=received_json_data["questions"]
 		
-		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type=type, model_number=model_number)
+		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type_equip=type_equip, model_number=model_number)
+		new_device.save()
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)
 		return HttpResponse("Good work homie")
