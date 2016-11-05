@@ -36,8 +36,10 @@ def locations(request):
     return render(request,'questions/location.html',items)
 
 def locationsadd(request):
-
 	return render(request, 'questions/location_form.html', {})
+
+def deviceadd(request):
+	return render(request, 'questions/device_add.html', {})
 
 def recent_scaned(ques,n):
 	out =[ int(q.time_scanned) for q in ques]
@@ -45,7 +47,6 @@ def recent_scaned(ques,n):
 	return out[-n:]
 
 def deviceView(request,dev_pk):
-
 	return HttpResponse("<h2>  Device {} </h2>".format(dev_pk))
 
 def locationView(request,loc_pk):
