@@ -47,7 +47,8 @@ def recent_scaned(ques,n):
 	return out[-n:]
 
 def deviceView(request,dev_pk):
-	return HttpResponse("<h2>  Device {} </h2>".format(dev_pk))
+	things = {'device': Device.objects.get(id=dev_pk)}
+	return render(request, 'questions/device-view.html', things)
 
 def locationView(request,loc_pk):
 	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
