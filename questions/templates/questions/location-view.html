@@ -15,8 +15,9 @@
 <ul>
   <ul class="list-group">
     {% for ims in location.devices %}
-    <div class="row">
+
         <a href="#" class="list-group-item">
+          <div class="row">
           <div class="col-sm-3"> {{ims.device_name}} </div>
           <div class="col-sm-3">
           {{ims.type_equip}}
@@ -28,8 +29,9 @@
             {{ims.model_number}}
           </div>
           <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+            </div>
         </a>
-    </div>
+
     {% endfor %}
   </ul>
 </ul>
