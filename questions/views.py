@@ -101,29 +101,24 @@ def addlocation(request):
 		devices_to_add=received_json_data["devices_to_add"]
 
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name)
+		print("we all good")
+		locdev=LocDev.objects.create() #this is an issue.
+		print("we all good")
 
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
+		for device_id in devices_to_add:
+			print (device_id , "is device_id")
+			
+			found_device=Device.objects.get(pk=device_id)
+			print (found_device , "is device_id")
+			
+			found_device.locdev_set.create()
+			#locdev.device_set.create(device_id)
+		#locdev.location_set.create(location)
+		location.locdev_set.create()
+		return HttpResponse("Correct")
 
-
-		'''
-		received_json_data=json.loads(request.body)
-		loc_barcode=received_json_data["loc_barcode_num"]
-		loc_barcode_name=received_json_data["loc_barcode_name"]
-		items=received_json_data["items"]
-		questions_for_loc_only=received_json_data["loc_questions"]
-
-		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_barcode_name)
-
-		for item in items:
-			sql_item= location.item_set.create(item_barcode_num=item["barcode_num"], item_type=item["item_type"], admin=item["admin"], user_assigned=item["user_assigned"])
-			for question in item["questions"]:
-				q= sql_item.question_set.create(question_text=question, pub_date=timezone.now())
-			location.item_set.add(sql_item)
-		for locquest in questions_for_loc_only:
-			location.question_set.create(question_text=locquest, pub_date=timezone.now())
-		return cors_json({'data': location.get_json_object()}) #THIS SHOULD JUST SAY GOOODBYE OR GOOD DATA
-		'''
 def add(request):
 	if request.method == 'POST':
 			q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
@@ -136,7 +131,8 @@ def add(request):
 def questionsbyuser(request):
 	if request.method == 'POST':
 		user=request.POST["user"]
-		filtered_items=Location.objects.filter(item__user_assigned=user)
+		#filtered_items=Location.objects.filter(item__user_assigned=user)
+		filtered_items=Location.objects.all()
 		#print filtered_items, "FILTERED"
 		return cors_json({'data': map (Location.get_json_object, filtered_items)})
 

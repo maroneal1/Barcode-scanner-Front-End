@@ -47,7 +47,8 @@ class Location(models.Model):
 		ret={}
 		ret["barcode_num"]=self.loc_barcode_num
 		ret["loc_barcode_name"]=self.loc_name
-		ret["items"]=map(access_lower_object_json, self.item_set.all())
+		ret["items"]=self.devices()	
+		#ret["items"]=map(access_lower_object_json, self.item_set.all())
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
@@ -67,8 +68,11 @@ class Device(models.Model):
 		return Question.objects.filter(item_assoc=self)
 
 class LocDev(models.Model):
-	location=models.ForeignKey( Location, on_delete=models.CASCADE)
-	device=models.ForeignKey( Device, on_delete=models.CASCADE)
+	location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE)
+	device=models.ForeignKey( Device, null=True, on_delete=models.CASCADE)
+	dummy_field=models.IntegerField(default=0)
+	def __str__(self):
+		return(str(self.device_set.all())+" and locaction: " + str(self.location_set.all())) 
 
 class Item(models.Model):
 	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
