@@ -5,8 +5,9 @@ import os
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
 django.setup()
-from questions.models import Question, Choice
-print Question.objects.all()
+from questions.models import Question,Device,LocDev
+print Device.objects.all()
+print LocDev.objects.all()
 print Question.objects.filter(id=1)
 print Question.objects.filter(question_text__startswith='W')
 q = Question.objects.get(pk=1)
