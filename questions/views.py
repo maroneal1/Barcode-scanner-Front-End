@@ -87,7 +87,7 @@ def adddevice(request):
 	
 
 
-
+#WHEN SETH WANTS THIS OD IT
 @csrf_exempt
 def addlocation(request):
 	if request.method == 'POST':
