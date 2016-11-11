@@ -25,3 +25,24 @@ body{
     margin:0;
     padding:0 0 0 0 /* 0 0 25px 0 */;
     border-top:0.2em solid #ff3700 /* 2px */;}
+
+.container {
+  max-width: 800px;
+  margin: 0;
+}
+
+.panel-group .panel + .panel {
+    margin-top: 0;
+}
+
+.panel.panel-default {
+  border-radius: 0;
+}
+
+.panel-title {
+  font-size: 14px;
+}
+
+#name {
+  font-size: 20px;
+}
