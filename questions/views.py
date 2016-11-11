@@ -35,6 +35,9 @@ def locations(request):
     items = {"Location":loc,}
     return render(request,'questions/location.html',items)
 
+def users(request):
+	return render(request,'questions/users.html')
+
 def locationsadd(request):
 	return render(request, 'questions/location_form.html', {})
 

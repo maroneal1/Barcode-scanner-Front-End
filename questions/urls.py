@@ -18,5 +18,6 @@ urlpatterns = [
     url(r'^addlocation/$', views.addlocation, name='addlocation'),
     url(r'^adddevice/$', views.adddevice, name='adddevice'),
     url(r'^addanswers$', views.addanswers, name='addanswers'),
+    url(r'^users$', views.users, name='users'),
 
     ]

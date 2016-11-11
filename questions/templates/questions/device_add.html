@@ -40,8 +40,8 @@
         $('.item-questions').children('.item-input').each(function() {
             questions.push($(this).find('.item-question').val());
         });
-
         form_data['questions'] = questions;
+        
         console.log(JSON.stringify(form_data));
 
         $.ajax({
