@@ -3,15 +3,15 @@
 {% block Locations %}active{% endblock %}
 
 {% block body %}
-    <h2>High low wellcone to devices</h2>
+    <h2>Locations</h2>
 
 <ul>
   <ul class="list-group">
     {% for loc in Location %}
-        <a href="{% url 'questions:locationView' loc.0.id %}" class="list-group-item">
-          {{loc.0.loc_name}}
+        <a href="{% url 'questions:locationView' loc.id %}" class="list-group-item">
+          {{loc.loc_name}}
           <span class="glyphicon {% if loc.1 > 0 %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
-          <span class="text-align center pull-right">{{loc.1}}</span>
+          <span class="text-align center pull-right">{{loc.num_devices}}</span>
         </a>
     {% endfor %}
   </ul>

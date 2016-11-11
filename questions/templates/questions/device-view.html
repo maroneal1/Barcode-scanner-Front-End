@@ -1,0 +1,27 @@
+{% extends 'questions/base.html' %}
+
+{% block Devices %}active{% endblock %}
+
+{% block body %}
+    <h2>{{device.device_name}} <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></h2>
+    <h4>Device Type: {{device.type_equip}} </h4>
+    <h4>Manufacturer: {{device.manufacturer}} </h4>
+    <h4>Model Number: {{device.model_number}} </h4>
+<div class="card-block">
+
+<ul>
+  <ul class="list-group">
+    {% for q in device.questions %}
+    <div class="row">
+        <a href="#" class="list-group-item">
+           {{q.question_text}}
+          <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+        </a>
+    </div>
+    {% endfor %}
+  </ul>
+</ul>
+
+</div>
+
+{% endblock %}

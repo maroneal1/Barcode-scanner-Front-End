@@ -1,0 +1,27 @@
+form {
+    text-align: center;
+    border: solid 3px black;
+    padding: 2em 5em 2em 5em;
+}
+
+.container {
+    max-width: 800px;
+}
+
+label {
+    font-size: 16px;
+}
+
+.form-control {
+    margin-bottom: 1em;
+}
+
+.item-input {
+    margin-bottom: 1em;
+}
+
+
+.add-question {
+    display: block;
+    margin-bottom: 1em;
+}

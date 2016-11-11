@@ -26,46 +26,49 @@ def index(request):
 
 
 def devices(request):
-	dev = Item.objects.all()
+	dev = Device.objects.all()
 	items = {"devices":dev}
 	return render(request,'questions/devices.html',items)
 
 def locations(request):
     loc = Location.objects.all()
-    itm = []
-    for i in loc:
-        itm.append(len(Item.objects.filter(loc_ass=i)))
-
-    items = {"Location":list(zip(loc,itm))}
-
+    items = {"Location":loc,}
     return render(request,'questions/location.html',items)
 
 def locationsadd(request):
-
 	return render(request, 'questions/location_form.html', {})
 
-def deviceView(request,dev_pk):
+def deviceadd(request):
+	return render(request, 'questions/device_add.html', {})
 
-	return HttpResponse("<h2>  Device {} </h2>".format(dev_pk))
+def recent_scaned(ques,n):
+	out =[ int(q.time_scanned) for q in ques]
+	out.sort()
+	return out[-n:]
+
+def deviceView(request,dev_pk):
+	things = {'device': Device.objects.get(id=dev_pk)}
+	return render(request, 'questions/device-view.html', things)
 
 def locationView(request,loc_pk):
 	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
-	name = Location.objects.filter(id=loc_pk)
-	ims = Item.objects.filter(loc_ass=name)
-	inspctor = ""
-	if ims:
-		inspctor = ims[0].user_assigned
+	location = Location.objects.get(id=loc_pk)
+	maping = LocDev.objects.filter(location=location)
+	#Device.objects.get(pk=
+	device = [Device.objects.get(pk=i.device.pk) for i in maping ]
+	lcoansers = ""#recent_scaned(Choice.objects.filter(location=location),1)
+	devansers = []
+	#for device in devices:
+		#devansers.append(Choice.object.filter(device))
 	things = {
-	'name': name,
-	'inspctor':inspctor,
-	'items':ims
+	'location': location,
 	}
 	return render(request, 'questions/location-view.html', things)
 
 #SETHS
 
-#URL TO POST DEVICE TO, creates questions there 
-#GETDEVICES URL-> send key from DB. 
+#URL TO POST DEVICE TO, creates questions there
+#GETDEVICES URL-> send key from DB.
 
 
 @csrf_exempt
@@ -77,14 +80,14 @@ def adddevice(request):
 		type_equip=received_json_data["type"]
 		model_number=received_json_data["model_number"]
 		questions_for_the_device=received_json_data["questions"]
-		
+
 		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type_equip=type_equip, model_number=model_number)
 		new_device.save()
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)
 		return HttpResponse("Good work homie")
-		
-	
+
+
 
 
 #WHEN SETH WANTS THIS OD IT
@@ -96,13 +99,13 @@ def addlocation(request):
 		loc_name=received_json_data["loc_name"]
 		questions_for_loc_only=received_json_data["loc_questions"]
 		devices_to_add=received_json_data["devices_to_add"]
-		
+
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name)
-		
+
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
-		
-		
+
+
 		'''
 		received_json_data=json.loads(request.body)
 		loc_barcode=received_json_data["loc_barcode_num"]
