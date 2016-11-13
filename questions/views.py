@@ -14,6 +14,7 @@ from django.template import Context, loader
 
 
 def cors_json(resp):
+	print(resp)
 	r = JsonResponse(resp)
 	r['Access-Control-Allow-Origin'] = '*'
 	r['Access-Control-Allow-Methods'] = "GET"
@@ -82,10 +83,11 @@ def adddevice(request):
 		questions_for_the_device=received_json_data["questions"]
 
 		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type_equip=type_equip, model_number=model_number)
+		
 		new_device.save()
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)
-		return HttpResponse("Good work homie")
+		return HttpResponse("Good work homie" + str(new_device.id))
 
 
 
@@ -107,11 +109,13 @@ def addlocation(request):
 			location.question_set.create(question_text=locquest)
 		for device_id in devices_to_add:
 			print (device_id , "is device_id")
-			print(Device.objects.all())	
-			found_device=Device.objects.get(pk=device_id)
-			print (found_device , "is device_id")
-			#NEED TO MAKE SURE 
+			print(Device.objects.all(), "sfgsdf ", device_id)
+			print(int(device_id))
+			found_device=Device.objects.get(pk=int(device_id))
+			#found_device=Device.objects.get(id=device_id)
+			print (found_device , "is device_id") 
 
+#what we can do here is print the object with a device_object.id
 			LocDev.objects.create(location=location, device=found_device) #Check me
 			#found_device.location_set.create()
 			#found_device.locdev_set.create(dummy_field=1)
@@ -133,9 +137,10 @@ def questionsbyuser(request):
 	if request.method == 'POST':
 		user=request.POST["user"]
 		#filtered_items=Location.objects.filter(item__user_assigned=user)
-		filtered_items=Location.objects.all()
-		#print filtered_items, "FILTERED"
-		return cors_json({'data': map (Location.get_json_object, filtered_items)})
+		#filtered_items=Location.objects.all()
+		filtered_items=LocDev.objects.all()
+		return cors_json({'data': map (LocDev.get_json_object, filtered_items)})
+		#return cors_json({'data': map (Location.get_json_object, filtered_items)})
 
 @csrf_exempt
 def addanswers(request):
