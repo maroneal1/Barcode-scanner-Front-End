@@ -26,7 +26,7 @@ TOP DOWN APPROACH
 
 #MAKE THE BARCODE_NUM UNIQUE
 class Location(models.Model):
-	loc_barcode_num = models.IntegerField(default=0)
+	loc_barcode_num = models.IntegerField(default=0, unique=True)
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
@@ -48,7 +48,14 @@ class Location(models.Model):
 		ret={}
 		ret["barcode_num"]=self.loc_barcode_num
 		ret["loc_barcode_name"]=self.loc_name
-		ret["items"]=self.devices()	
+		maping = LocDev.objects.filter(location=self)
+		
+		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
+		print(item_ret, "-----------")
+		#ret["items"]=map(Device.get_json_object, item_ret)
+		ret["devices"]=item_ret
+			
+		print(item_ret, "ITEEEMMMSSSSSSS")
 		#ret["items"]=map(access_lower_object_json, self.item_set.all())
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
@@ -56,16 +63,25 @@ class Location(models.Model):
 		return str(self.loc_barcode_num)
 
 class Device(models.Model):
+	@property
+	def questions(self):
+		return Question.objects.filter(item_assoc=self)
 	device_name = models.CharField(max_length=200) #fireqtinquisher
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	type_equip = models.CharField(max_length=200)
+	def get_json_object(self):
+		ret={}
+		ret["device_name"]= self.device_name
+		ret["manu"]=self.manufacturer
+		ret["model_num"]= self.model_number
+		ret["type_equip"]= self.type_equip
+		ret["items"]= map(Question.get_json_object,Question.objects.filter(item_assoc=self))
+		print (ret, "----------")
+		return ret
 	def __str__(self):
 		return str(self.device_name)
 
-	@property
-	def questions(self):
-		return Question.objects.filter(item_assoc=self)
 
 class LocDev(models.Model):
 	location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE)
@@ -73,6 +89,10 @@ class LocDev(models.Model):
 	dummy_field=models.IntegerField(default=0)
 	def __str__(self):
 		return(" and locaction: " )#+ str(self.location_set.all())) 
+	def get_json_object(self):
+		ret={}
+		ret["locations"]=map(Location.get_json_object,Location.objects.all() )
+		return ret; 
 
 class Item(models.Model):
 	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
