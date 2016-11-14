@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
+from django.contrib.auth import authenticate, login,logout
 
 import json
 
@@ -25,9 +26,16 @@ def cors_json(resp):
 def index(request):
 	return redirect(resdevices)
 
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
 
+
+
+#@login_required
 def devices(request):
-	dev = Device.objects.all()
+	dev = list(Device.objects.all())
+	dev.sort()
 	items = {"devices":dev}
 	return render(request,'questions/devices.html',items)
 
@@ -36,8 +44,13 @@ def locations(request):
     items = {"Location":loc,}
     return render(request,'questions/location.html',items)
 
+def users(request):
+	return render(request,'questions/users.html')
+
 def locationsadd(request):
-	return render(request, 'questions/location_form.html', {})
+	dev = Device.objects.all()
+	items = {"devices":dev}
+	return render(request, 'questions/location_form.html', items)
 
 def deviceadd(request):
 	return render(request, 'questions/device_add.html', {})
@@ -48,7 +61,8 @@ def recent_scaned(ques,n):
 	return out[-n:]
 
 def deviceView(request,dev_pk):
-	things = {'device': Device.objects.get(id=dev_pk)}
+	dev = Device.objects.get(id=dev_pk)
+	things = {'device': dev}
 	return render(request, 'questions/device-view.html', things)
 
 def locationView(request,loc_pk):
@@ -83,7 +97,7 @@ def adddevice(request):
 		questions_for_the_device=received_json_data["questions"]
 
 		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type_equip=type_equip, model_number=model_number)
-		
+
 		new_device.save()
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)

@@ -2,95 +2,83 @@
 {% load staticfiles %}
 {% block sheet %}{% static 'questions/add_location.css' %}{% endblock %}
 {% block body %}
-<div class="container">
-    <form>
-        <div class="form-group">
-            <label for="admin">Administrator</label>
-            <input type="text" class="form-control" id="admin" placeholder="Administrator">
-        </div>
-        <div class="form-group">
-            <label for="location ID">Location Information</label>
-            <input type="text" class="form-control" id="locationID" placeholder="Location Barcode">
-        </div>
-        <div class="form-group">
-            <input type="text" class="form-control" id="location_description" placeholder="Location Description">
-        </div>
-        <div class="form-group location-questions">
-            <label for="location ID">Location Questions</label>
-            <div class=loc-question>
-              <input type="text" class="form-control location-question" placeholder="Question">
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="user">User Assigned</label>
+                <input type="text" class="form-control" id="user" placeholder="User">
             </div>
-        </div>
-        <button type="button" onclick="add_location_question($(this))" class="btn btn-primary add-loc-question">
-                Add Location Question
-        </button>
-        <div class="form-group form-items">
-            <div class="item">
-                <label for="description">Item</label>
-                <input type="text" class="form-control" id="itemID" placeholder="Item Barcode">
-                <input type="text" class="form-control" id="itemType" placeholder="Item Description">
-                <input type="text" class="form-control" id="assignee" placeholder="User Assigned">
-                <div class="item-questions">
-                    <label for="question">Item Questions</label>
-                    <div class="item-input">
-                      <input type="text" class="form-control item-question" placeholder="Question">
-                    </div>
+            <div class="form-group">
+                <label for="location ID">Location Information</label>
+                <input type="text" class="form-control" id="locationID" placeholder="Location Barcode">
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" id="location_description" placeholder="Location Description">
+            </div>
+            <div class="form-group location-questions">
+                <label for="location ID">Location Questions</label>
+                <div class=loc-question>
+                  <input type="text" class="form-control location-question" placeholder="Question">
                 </div>
-                <button type="button" onclick="add_question_field($(this))" class="btn btn-primary add-question">
-                        Add Item Question
-                </button>
             </div>
-        </div>
-        <button type="button" onclick="add_item_field()" class="btn btn-primary add-item">
-                Add Another Item
-        </button>
-        <button type="button" onclick="submit_form()" class="btn btn-primary">
-                Submit
-        </button>
-    </form>
-</div>
-<script>
-    function submit_form() {
-        var form_data = {};
-        var items = [];
-        form_data['loc_barcode_name'] = $('#location_description').val();
-        form_data['loc_barcode_num'] = $('#locationID').val();
+            <button type="button" onclick="add_location_question($(this))" class="btn btn-primary add-loc-question">
+                    Add Location Question
+            </button>
+            <label for="description" id="devices_label">Devices</label>
+            <div class="devices">
+                {% for device in devices %}
+                    <label class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input">
+                        <span class="custom-control-indicator"></span>
+                        <span class="custom-control-description">{{device.device_name}}</span>
+                        <span> - </span>
+                        <span id="device_type">{{device.type_equip}}</span>
+                        <span id="device_id">{{device.id}}</span>
+                    </label>
+                {% endfor %}
+            </div>
+            <button type="button" onclick="submit_form()" class="btn btn-primary">
+                    Submit
+            </button>
+        </form>
+    </div>
+    <script>
+        function submit_form() {
+            var form_data = {};
 
-        $('.form-items').children('.item').each(function() {
-            var item = {};
-            item['barcode_num'] = $(this).find('#itemID').val();
-            item['item_type'] = $(this).find('#itemType').val();
-            item['user_assigned'] = $(this).find('#assignee').val();
-            item['admin'] = $('#admin').val();
-            item['questions'] = [];
-            $(this).find('.item-questions').children('.item-input').each(function() {
-                item['questions'].push($(this).find('.item-question').val());
+            var loc_questions = [];
+            $('.location-questions').children('.loc-question').each(function() {
+                loc_questions.push($(this).find('.location-question').val());
             });
-            items.push(item);
-        });
-        form_data['items'] = items;
+            form_data['loc_questions'] = loc_questions;
 
-        var loc_questions = [];
-        $('.location-questions').children('.loc-question').each(function() {
-            loc_questions.push($(this).find('.location-question').val());
-        });
-        form_data['loc_questions'] = loc_questions;
+            var items = [];
+            form_data['loc_name'] = $('#location_description').val();
+            form_data['loc_barcode_num'] = $('#locationID').val();
 
-        console.log(JSON.stringify(form_data));
+            $('.devices').children('.custom-checkbox').each(function() {
+                if($(this).find('.custom-control-input').is(':checked')) {
+                    items.push($(this).find('#device_id').text());
+                }
+            });
+            form_data['devices_to_add'] = items;
+            form_data['user_assigned'] = $('#user').val();
 
-        $.ajax({
-            url: "/questions/addlocation/",
-            type: "POST",
-            data: JSON.stringify(form_data),
-            contentType: "application/json",
-            success: function() {
-                alert('Data submitted successfully!');
-                location.reload();
-            },
-            error: function() {
-                alert('Data could not be submitted.');
-            }
-        });
-    };
-</script>
+            console.log(JSON.stringify(form_data));
+
+            $.ajax({
+                url: "/questions/addlocation/",
+                type: "POST",
+                data: JSON.stringify(form_data),
+                contentType: "application/json",
+                success: function() {
+                    alert('Data submitted successfully!');
+                    location.reload();
+                },
+                error: function() {
+                    alert('Data could not be submitted.');
+                }
+            });
+        };
+    </script>
 {% endblock %}

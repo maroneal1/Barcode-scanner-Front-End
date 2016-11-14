@@ -10,7 +10,7 @@
         {% for device in devices %}
             <a href="{% url 'questions:deviceView' device.id %}" class="list-group-item">
               {{device.device_name}}
-              <span class="text-align center pull-right">{{device.type_equip}}</span>
+              <span class="pull-right">{{device.type_equip}}</span>
             </a>
         {% endfor %}
       </ul>
