@@ -11,7 +11,7 @@ from questions.models import Question,Choice,Item,Location,Device,LocDev
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect
 from django.template import Context, loader
-
+from questions.UserContainers import User,UserFactory
 
 
 def cors_json(resp):
@@ -45,7 +45,7 @@ def locations(request):
     return render(request,'questions/location.html',items)
 
 def users(request):
-	return render(request,'questions/users.html')
+	return render(request,'questions/users.html',{users:UserFactory()})
 
 def locationsadd(request):
 	dev = Device.objects.all()
@@ -119,7 +119,7 @@ def addlocation(request):
 
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name, user_assigned=user_assigned)
 		locdev=LocDev.objects.create() #location for locdev obj = self
-		
+
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
 		for device_id in devices_to_add:
