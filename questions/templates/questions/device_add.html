@@ -41,7 +41,13 @@
             questions.push($(this).find('.item-question').val());
         });
         form_data['questions'] = questions;
-        
+
+        var barcodes = [];
+        for(i=1; i<1001; i++) {
+          barcodes.push(i.toString());
+        }
+        form_data['barcodes'] = barcodes;
+
         console.log(JSON.stringify(form_data));
 
         $.ajax({
