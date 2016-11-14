@@ -47,7 +47,7 @@ class Location(models.Model):
 		def access_lower_object_json(key):
 			return key.get_json_object()
 		ret={}
-		ret["barcode_num"]=self.loc_barcode_num
+		ret["loc_barcode_num"]=str(self.loc_barcode_num)
 		ret["loc_barcode_name"]=self.loc_name
 		ret["location_id"]=self.id
 		
@@ -82,9 +82,10 @@ class Device(models.Model):
 		ret={}
 		ret["device_name"]= self.device_name #example FEA
 		ret["manu"]=self.manufacturer
-		ret["db_id"]=self.id
+		#ret["device_id"]=self.id # NOT NEEDED
 		ret["model_num"]= self.model_number
 		ret["type_equip"]= self.type_equip
+		ret["barcodes"]= map(str,self.item_set.all())
 		ret["questions"]= map(Question.get_json_object,Question.objects.filter(item_assoc=self))
 		return ret
 	def __str__(self):
@@ -110,7 +111,7 @@ class Item(models.Model):
 		def access_lower_object_json(key):
 			return key.get_json_object()
 		ret ={}
-		ret["barcode_num"]=self.item_barcode_num
+		ret["barcode_num"]=self.item_barcode_num # needs to be set
 		#ret["item_type"]=self.item_type
 
 		#ret["questions"]=map(access_lower_object_json, self.question_set.all())
@@ -126,6 +127,7 @@ class Question(models.Model):
 	def get_json_object(self):
 		ret ={}
 		ret["question_text"]=self.question_text
+		ret["question_id"]=self.id
 		return ret
 	def __str__(self):
 		return str((self.question_text, self.pk))
