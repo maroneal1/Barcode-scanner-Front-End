@@ -39,7 +39,9 @@ def users(request):
 	return render(request,'questions/users.html')
 
 def locationsadd(request):
-	return render(request, 'questions/location_form.html', {})
+	dev = Device.objects.all()
+	items = {"devices":dev}
+	return render(request, 'questions/location_form.html', items)
 
 def deviceadd(request):
 	return render(request, 'questions/device_add.html', {})
@@ -105,15 +107,15 @@ def addlocation(request):
 
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name)
 		locdev=LocDev.objects.create() #location for locdev obj = self
-		
+
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
 		for device_id in devices_to_add:
 			print (device_id , "is device_id")
-			print(Device.objects.all())	
+			print(Device.objects.all())
 			found_device=Device.objects.get(pk=device_id)
 			print (found_device , "is device_id")
-			#NEED TO MAKE SURE 
+			#NEED TO MAKE SURE
 
 			LocDev.objects.create(location=location, device=found_device) #Check me
 			#found_device.location_set.create()
