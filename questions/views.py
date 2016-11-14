@@ -121,17 +121,13 @@ def addlocation(request):
 			print (device_id , "is device_id")
 			print(Device.objects.all(), "sfgsdf ", device_id)
 			print(int(device_id))
-			found_device=Device.objects.get(pk=int(device_id))
-			#found_device=Device.objects.get(id=device_id)
-			print (found_device , "is device_id")
-
-#what we can do here is print the object with a device_object.id
+			found_device=Device.objects.get(id=int(device_id))
+			print (found_device)
 			LocDev.objects.create(location=location, device=found_device) #Check me
-			#found_device.location_set.create()
-			#found_device.locdev_set.create(dummy_field=1)
-			#locdev.device.create(device=device_id)
-		#locdev.location_set.create(location)
-	#	location.locdev_set.create(dummy_field=1)
+			#location.device_set.add(found_device)
+			#location.save()
+			#print (location.device_set, "is deviceset")
+
 		return HttpResponse("Correct")
 
 def add(request):
@@ -147,10 +143,10 @@ def questionsbyuser(request):
 	if request.method == 'POST':
 		user=request.POST["user"]
 		#filtered_items=Location.objects.filter(item__user_assigned=user)
-		#filtered_items=Location.objects.all()
-		filtered_items=LocDev.objects.all()
-		return cors_json({'data': map (LocDev.get_json_object, filtered_items)})
-		#return cors_json({'data': map (Location.get_json_object, filtered_items)})
+		filtered_items=Location.objects.all()
+		#filtered_items=LocDev.objects.all()
+	#	return cors_json({'data': map (LocDev.get_json_object, filtered_items)})
+		return cors_json({'data': map (Location.get_json_object, filtered_items)})
 
 @csrf_exempt
 def addanswers(request):
