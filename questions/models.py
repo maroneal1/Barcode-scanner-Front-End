@@ -49,12 +49,12 @@ class Location(models.Model):
 		ret["barcode_num"]=self.loc_barcode_num
 		ret["loc_barcode_name"]=self.loc_name
 		maping = LocDev.objects.filter(location=self)
-		
+
 		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
 		print(item_ret, "-----------")
 		#ret["items"]=map(Device.get_json_object, item_ret)
 		ret["devices"]=item_ret
-			
+
 		print(item_ret, "ITEEEMMMSSSSSSS")
 		#ret["items"]=map(access_lower_object_json, self.item_set.all())
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
@@ -79,6 +79,10 @@ class Device(models.Model):
 		ret["items"]= map(Question.get_json_object,Question.objects.filter(item_assoc=self))
 		print (ret, "----------")
 		return ret
+	def __gt__(self,other):
+        return self.device_name > other.device_name
+    def __lt__(self,other):
+        return self.device_name < other.device_name
 	def __str__(self):
 		return str(self.device_name)
 
@@ -88,11 +92,11 @@ class LocDev(models.Model):
 	device=models.ForeignKey( Device, null=True, on_delete=models.CASCADE)
 	dummy_field=models.IntegerField(default=0)
 	def __str__(self):
-		return(" and locaction: " )#+ str(self.location_set.all())) 
+		return(" and locaction: " )#+ str(self.location_set.all()))
 	def get_json_object(self):
 		ret={}
 		ret["locations"]=map(Location.get_json_object,Location.objects.all() )
-		return ret; 
+		return ret;
 
 class Item(models.Model):
 	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
