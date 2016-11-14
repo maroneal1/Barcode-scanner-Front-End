@@ -50,6 +50,7 @@ class Location(models.Model):
 		ret["loc_barcode_num"]=str(self.loc_barcode_num)
 		ret["loc_barcode_name"]=self.loc_name
 		ret["location_id"]=self.id
+		ret["user_assigned"]=self.user_assigned
 		
 		maping = LocDev.objects.filter(location=self)
 		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
@@ -96,7 +97,7 @@ class Device(models.Model):
 class LocDev(models.Model):
 	location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE)
 	device=models.ForeignKey( Device, null=True, on_delete=models.CASCADE)
-	dummy_field=models.IntegerField(default=0)
+	#dummy_field=models.IntegerField(default=0)
 	def __str__(self):
 		return(" and locaction: " )#+ str(self.location_set.all())) 
 	def get_json_object(self):

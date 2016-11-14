@@ -99,10 +99,11 @@ def addlocation(request):
 		received_json_data=json.loads(request.body)
 		loc_barcode=received_json_data["loc_barcode_num"]
 		loc_name=received_json_data["loc_name"]
+		user_assigned=received_json_data["user_assigned"]
 		questions_for_loc_only=received_json_data["loc_questions"]
 		devices_to_add=received_json_data["devices_to_add"]
 
-		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name)
+		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name, user_assigned=user_assigned)
 		locdev=LocDev.objects.create() #location for locdev obj = self
 		
 		for locquest in questions_for_loc_only:

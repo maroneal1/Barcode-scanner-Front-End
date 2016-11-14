@@ -9,6 +9,7 @@ from questions.models import Question,Device,LocDev
 print Device.objects.all()
 print LocDev.objects.all()
 print Question.objects.filter(id=1)
+print Location.objects.filter(user=1)
 print Question.objects.filter(question_text__startswith='W')
 q = Question.objects.get(pk=1)
 print q, " IS QUESTION"
