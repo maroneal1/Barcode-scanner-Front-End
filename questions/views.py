@@ -47,7 +47,9 @@ def users(request):
 	return render(request,'questions/users.html')
 
 def locationsadd(request):
-	return render(request, 'questions/location_form.html', {})
+	dev = Device.objects.all()
+	items = {"devices":dev}
+	return render(request, 'questions/location_form.html', items)
 
 def deviceadd(request):
 	return render(request, 'questions/device_add.html', {})
