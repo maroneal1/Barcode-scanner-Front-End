@@ -34,7 +34,8 @@ def logout_view(request):
 
 #@login_required
 def devices(request):
-	dev = Device.objects.all()
+	dev = list(Device.objects.all())
+	dev.sort()
 	items = {"devices":dev}
 	return render(request,'questions/devices.html',items)
 
@@ -60,7 +61,8 @@ def recent_scaned(ques,n):
 	return out[-n:]
 
 def deviceView(request,dev_pk):
-	things = {'device': Device.objects.get(id=dev_pk)}
+	dev = Device.objects.get(id=dev_pk)
+	things = {'device': dev}
 	return render(request, 'questions/device-view.html', things)
 
 def locationView(request,loc_pk):

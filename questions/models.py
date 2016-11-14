@@ -35,8 +35,9 @@ class Location(models.Model):
 	@property
 	def devices(self):
 		maping = LocDev.objects.filter(location=self)
-		print (Device.objects.all())
-		return [Device.objects.get(pk=i.device.pk) for i in maping ]
+		dev =  [Device.objects.get(pk=i.device.pk) for i in maping ]
+		dev.sort()
+		return dev
 	@property
 	def num_devices(self):
 		return len(LocDev.objects.filter(location=self))
@@ -100,7 +101,6 @@ class Device(models.Model):
 class LocDev(models.Model):
 	location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE)
 	device=models.ForeignKey( Device, null=True, on_delete=models.CASCADE)
-	dummy_field=models.IntegerField(default=0)
 	def __str__(self):
 		return(" and locaction: " )#+ str(self.location_set.all()))
 	def get_json_object(self):
