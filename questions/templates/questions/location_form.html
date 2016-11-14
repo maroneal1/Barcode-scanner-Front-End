@@ -33,6 +33,7 @@
                         <span class="custom-control-description">{{device.device_name}}</span>
                         <span> - </span>
                         <span id="device_type">{{device.type_equip}}</span>
+                        <span id="device_id">{{device.id}}</span>
                     </label>
                 {% endfor %}
             </div>
@@ -44,20 +45,6 @@
     <script>
         function submit_form() {
             var form_data = {};
-            var items = [];
-            form_data['loc_barcode_name'] = $('#location_description').val();
-            form_data['loc_barcode_num'] = $('#locationID').val();
-
-            $('.devices').children('.custom-checkbox').each(function() {
-                if($(this).find('.custom-control-input').is(':checked')) {
-                    var item = {};
-                    item['admin'] = $('#admin').val();
-                    item['device_name'] = $(this).find('.custom-control-description').text();
-                    item['device_type'] = $(this).find('#device_type').text();
-                    items.push(item);
-                }
-            });    
-            form_data['items'] = items;
 
             var loc_questions = [];
             $('.location-questions').children('.loc-question').each(function() {
@@ -65,21 +52,32 @@
             });
             form_data['loc_questions'] = loc_questions;
 
+            var items = [];
+            form_data['loc_name'] = $('#location_description').val();
+            form_data['loc_barcode_num'] = $('#locationID').val();
+
+            $('.devices').children('.custom-checkbox').each(function() {
+                if($(this).find('.custom-control-input').is(':checked')) {
+                    items.push($(this).find('#device_id').text());
+                }
+            });
+            form_data['devices_to_add'] = items;
+
             console.log(JSON.stringify(form_data));
 
-            // $.ajax({
-            //     url: "/questions/addlocation/",
-            //     type: "POST",
-            //     data: JSON.stringify(form_data),
-            //     contentType: "application/json",
-            //     success: function() {
-            //         alert('Data submitted successfully!');
-            //         location.reload();
-            //     },
-            //     error: function() {
-            //         alert('Data could not be submitted.');
-            //     }
-            // });
+            $.ajax({
+                url: "/questions/addlocation/",
+                type: "POST",
+                data: JSON.stringify(form_data),
+                contentType: "application/json",
+                success: function() {
+                    alert('Data submitted successfully!');
+                    location.reload();
+                },
+                error: function() {
+                    alert('Data could not be submitted.');
+                }
+            });
         };
     </script>
 {% endblock %}

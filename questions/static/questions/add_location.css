@@ -42,3 +42,7 @@ label {
 #devices_label {
     margin-bottom: 1em;
 }
+
+#device_id {
+  display: none;
+}
