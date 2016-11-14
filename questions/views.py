@@ -103,7 +103,7 @@ def addlocation(request):
 		devices_to_add=received_json_data["devices_to_add"]
 
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name)
-		#locdev=LocDev.objects.create() #location for locdev obj = self
+		locdev=LocDev.objects.create() #location for locdev obj = self
 		
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
@@ -113,10 +113,10 @@ def addlocation(request):
 			print(int(device_id))
 			found_device=Device.objects.get(id=int(device_id))
 			print (found_device)
-			#LocDev.objects.create(location=location, device=found_device) #Check me
-			location.device_set.add(found_device)
-			location.save()
-			print (location.device_set, "is deviceset")
+			LocDev.objects.create(location=location, device=found_device) #Check me
+			#location.device_set.add(found_device)
+			#location.save()
+			#print (location.device_set, "is deviceset")
 
 		return HttpResponse("Correct")
 
