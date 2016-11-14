@@ -30,13 +30,14 @@ class Location(models.Model):
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
-	
+
 	#id NEEDED.
 	@property
 	def devices(self):
 		maping = LocDev.objects.filter(location=self)
-		print (Device.objects.all())
-		return [Device.objects.get(pk=i.device.pk) for i in maping ]
+		dev =  [Device.objects.get(pk=i.device.pk) for i in maping ]
+		dev.sort()
+		return dev
 	@property
 	def num_devices(self):
 		return len(LocDev.objects.filter(location=self))
@@ -50,7 +51,7 @@ class Location(models.Model):
 		ret["loc_barcode_num"]=str(self.loc_barcode_num)
 		ret["loc_barcode_name"]=self.loc_name
 		ret["location_id"]=self.id
-		
+
 		maping = LocDev.objects.filter(location=self)
 		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
 		#print(self.device_set.all(), "is the devices associated with ", self.id)
@@ -58,12 +59,12 @@ class Location(models.Model):
 		#for device in self.device_set.all():
 		#	little_ret.append(device.get_json_object())
 		#print (little_ret)
-		
+
 		#ret["devices"]=map(Device.get_json_object(), self.device_set.all())
 		#ret["devices"]=little_ret
 		ret["devices"]=item_ret
-			
-		
+
+
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
@@ -73,12 +74,12 @@ class Device(models.Model):
 	@property
 	def questions(self):
 		return Question.objects.filter(item_assoc=self)
-	device_name  = models.CharField(max_length=200) 
+	device_name  = models.CharField(max_length=200)
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	type_equip   = models.CharField(max_length=200)
 	#location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE) #THIS IS WHAT IS CHANGED
-	#how to have a device at two locations? THIS IS BAD 
+	#how to have a device at two locations? THIS IS BAD
 	def get_json_object(self):
 		ret={}
 		ret["device_name"]= self.device_name #example FEA
@@ -90,9 +91,9 @@ class Device(models.Model):
 		ret["questions"]= map(Question.get_json_object,Question.objects.filter(item_assoc=self))
 		return ret
 	def __gt__(self,other):
-        return self.device_name > other.device_name
-    def __lt__(self,other):
-        return self.device_name < other.device_name
+	    return self.device_name > other.device_name
+	def __lt__(self,other):
+		return self.device_name < other.device_name
 	def __str__(self):
 		return str(self.device_name)
 
@@ -100,7 +101,6 @@ class Device(models.Model):
 class LocDev(models.Model):
 	location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE)
 	device=models.ForeignKey( Device, null=True, on_delete=models.CASCADE)
-	dummy_field=models.IntegerField(default=0)
 	def __str__(self):
 		return(" and locaction: " )#+ str(self.location_set.all()))
 	def get_json_object(self):
