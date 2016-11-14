@@ -5,8 +5,8 @@
     <div class="container">
         <form>
             <div class="form-group">
-                <label for="admin">Administrator</label>
-                <input type="text" class="form-control" id="admin" placeholder="Administrator">
+                <label for="user">User Assigned</label>
+                <input type="text" class="form-control" id="user" placeholder="User">
             </div>
             <div class="form-group">
                 <label for="location ID">Location Information</label>
@@ -62,6 +62,7 @@
                 }
             });
             form_data['devices_to_add'] = items;
+            form_data['user_assigned'] = $('#user').val();
 
             console.log(JSON.stringify(form_data));
 
