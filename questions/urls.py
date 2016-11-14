@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 from django.views.generic import TemplateView
+from django.contrib.auth import views as auth_views
 
 app_name = "questions"
 
@@ -19,5 +20,6 @@ urlpatterns = [
     url(r'^adddevice/$', views.adddevice, name='adddevice'),
     url(r'^addanswers$', views.addanswers, name='addanswers'),
     url(r'^users$', views.users, name='users'),
+    url(r'^login/$', auth_views.login),
 
     ]

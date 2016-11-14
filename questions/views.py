@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
+from django.contrib.auth import authenticate, login,logout
 
 import json
 
@@ -25,7 +26,13 @@ def cors_json(resp):
 def index(request):
 	return redirect(resdevices)
 
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
 
+
+
+#@login_required
 def devices(request):
 	dev = Device.objects.all()
 	items = {"devices":dev}
@@ -86,7 +93,7 @@ def adddevice(request):
 		questions_for_the_device=received_json_data["questions"]
 
 		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type_equip=type_equip, model_number=model_number)
-		
+
 		new_device.save()
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)
@@ -107,7 +114,7 @@ def addlocation(request):
 
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name)
 		locdev=LocDev.objects.create() #location for locdev obj = self
-		
+
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
 		for device_id in devices_to_add:
@@ -116,7 +123,7 @@ def addlocation(request):
 			print(int(device_id))
 			found_device=Device.objects.get(pk=int(device_id))
 			#found_device=Device.objects.get(id=device_id)
-			print (found_device , "is device_id") 
+			print (found_device , "is device_id")
 
 #what we can do here is print the object with a device_object.id
 			LocDev.objects.create(location=location, device=found_device) #Check me
