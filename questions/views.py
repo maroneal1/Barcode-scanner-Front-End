@@ -145,17 +145,17 @@ def questionsbyuser(request):
 def addanswers(request):
 	if request.method == 'POST':
 		received_json_data=json.loads(request.body)["data"]
-		for loc_assessed in received_json_data:
-			loc_barcode=loc_assessed["barcode_num"]
+		answers=recieved_json_data["answers"]
+		for answer in answers:
+			time_answered=answer["time_answered"]
 			location_entry=Location.objects.get(loc_barcode_num=loc_barcode)
-			questions_for_loc_only=loc_assessed["loc_questions"]
-			items=loc_assessed["items"]
-			for item in items:
-				time_scanned=item["time_scanned"]
-				item_barcode=item["barcode_num"]
-				person_scanned=item["person_scanned"]
-				item_questions=item["questions"]
-				item_entry=location_entry.item_set.get(item_barcode_num=item_barcode)
+			loc_id=answer["loc_id"]
+			question_id=answer["question_id"]
+			user=answer["user"]
+			answer_text=answer["answer_text"]
+
+
+			'''	item_entry=location_entry.item_set.get(item_barcode_num=item_barcode)
 
 				location_entry.item_set.filter(item_barcode_num = item_barcode).update(person_scanned=person_scanned)
 				location_entry.item_set.filter(item_barcode_num = item_barcode).update(time_scanned=time_scanned)
@@ -165,5 +165,5 @@ def addanswers(request):
 			for question in questions_for_loc_only:
 				question_real=location_entry.question_set.get(question_text=question["question_text"])
 				question_real.choice_set.create(choice_text=question["question_answer"])
-
+		'''
 		return HttpResponse("Good work homie")
