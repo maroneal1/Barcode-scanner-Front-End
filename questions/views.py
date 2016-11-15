@@ -81,12 +81,14 @@ def adddevice(request):
 		type_equip=received_json_data["type"]
 		model_number=received_json_data["model_number"]
 		questions_for_the_device=received_json_data["questions"]
+		barcodes=received_json_data["barcodes"]
 
 		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type_equip=type_equip, model_number=model_number)
-		
-		new_device.save()
+		for barcode in barcodes:
+			new_device.item_set.create(item_barcode_num=barcode)
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)
+		new_device.save()
 		return HttpResponse("Good work homie" + str(new_device.id))
 
 
