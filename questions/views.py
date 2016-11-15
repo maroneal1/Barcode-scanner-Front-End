@@ -145,15 +145,19 @@ def questionsbyuser(request):
 def addanswers(request):
 	if request.method == 'POST':
 		received_json_data=json.loads(request.body)["data"]
-		answers=recieved_json_data["answers"]
+		answers=received_json_data["answers"]
 		for answer in answers:
 			time_answered=answer["time_answered"]
-			location_entry=Location.objects.get(loc_barcode_num=loc_barcode)
 			loc_id=answer["loc_id"]
-			question_id=answer["question_id"]
 			user=answer["user"]
 			answer_text=answer["answer_text"]
-
+			
+			if "question_id" in answer:
+				question_id=answer["question_id"]
+				question_entry=Question.objects.get(id=question_id)
+			else:
+				taco= "I am a note"
+			question_entry.choice_set.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered)
 
 			'''	item_entry=location_entry.item_set.get(item_barcode_num=item_barcode)
 
