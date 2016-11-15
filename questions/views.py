@@ -45,7 +45,7 @@ def locations(request):
     return render(request,'questions/location.html',items)
 
 def users(request):
-	return render(request,'questions/users.html',{users:UserFactory()})
+	return render(request,'questions/users.html',{'usrs':UserFactory()})
 
 def locationsadd(request):
 	dev = Device.objects.all()
