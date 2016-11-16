@@ -23,16 +23,53 @@
   </ul>
 </ul>
 
+<ul>
+  <ul class="list-group">
+    {% for item in items %}
+    <div class="row">
+        <a href="#" class="list-group-item">
+           {{item.item_barcode_num}}
+          <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+        </a>
+    </div>
+    {% endfor %}
+  </ul>
+</ul>
+
 </div>
 <div class="container">
   <form>
     <div class="input-group">
        <input type="text" class="form-control" placeholder="Barcode">
        <span class="input-group-btn">
-            <button class="btn btn-primary" on type="button">Add Barcode</button>
+            <button class="btn btn-primary" type="button" onclick="submit_form()">Add Barcode</button>
        </span>
     </div>
   </form>
 </div>
+
+<script>
+    function submit_form() {
+      var form_data = {};
+      form_data['barcode'] = $('.form-control').val();
+
+      console.log(JSON.stringify(form_data));
+
+      $.ajax({
+          url: "/questions/device/view/{{dev_pk}}/",
+          type: "POST",
+          data: JSON.stringify(form_data),
+          contentType: "application/json",
+          success: function() {
+              alert('Data submitted successfully!');
+              location.reload();
+          },
+          error: function() {
+              alert('Data could not be submitted.');
+          }
+      });
+    };
+
+</script>
 
 {% endblock %}
