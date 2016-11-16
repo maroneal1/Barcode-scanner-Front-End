@@ -30,7 +30,7 @@ class Location(models.Model):
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
-	
+
 	@property
 	def devices(self):
 		maping = LocDev.objects.filter(location=self)
@@ -54,7 +54,7 @@ class Location(models.Model):
 		maping = LocDev.objects.filter(location=self)
 		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
 		ret["devices"]=item_ret
-		
+
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
