@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login,logout
+from django.views import View
 
 import json
 
@@ -60,10 +61,16 @@ def recent_scaned(ques,n):
 	out.sort()
 	return out[-n:]
 
-def deviceView(request,dev_pk):
-	dev = Device.objects.get(id=dev_pk)
-	things = {'device': dev}
-	return render(request, 'questions/device-view.html', things)
+class deviceView(View):
+	def get(self, request,dev_pk):
+		dev = Device.objects.get(id=dev_pk)
+		itms = Item.objects.filter(item_type=dev)
+		things = {'device': dev,'items':itms}
+		return render(request, 'questions/device-view.html', things)
+	def post(self, request,dev_pk):
+		received_json_data=json.loads(request.body)
+		Item.objects.create(item_type=Device.objects.get(id=dev_pk),
+							item_barcode_num=received_json_data["barcode"])
 
 def locationView(request,loc_pk):
 	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
