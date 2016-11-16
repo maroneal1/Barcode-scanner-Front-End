@@ -120,12 +120,6 @@ def addlocation(request):
 
 		return HttpResponse("Correct")
 
-def add(request):
-	if request.method == 'POST':
-			q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
-			q.save()
-			return HttpResponse("Good work homie")
-
 
 #KYLES
 @csrf_exempt
