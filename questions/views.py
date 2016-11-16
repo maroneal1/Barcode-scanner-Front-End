@@ -62,7 +62,6 @@ def recent_scaned(ques,n):
 	out.sort()
 	return out[-n:]
 
-
 class deviceView(View):
 	@method_decorator(csrf_exempt)
 	def dispatch(self, request, dev_pk):
@@ -73,7 +72,6 @@ class deviceView(View):
 		things = {'device': dev,'items':itms, 'dev_pk':dev_pk}
 		return render(request, 'questions/device-view.html', things)
 	def post(self, request,dev_pk):
-		print('why')
 		received_json_data=json.loads(request.body)
 		Item.objects.create(item_type=Device.objects.get(id=dev_pk),
 							item_barcode_num=received_json_data["barcode"])
