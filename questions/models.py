@@ -30,8 +30,7 @@ class Location(models.Model):
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
-
-	#id NEEDED.
+	
 	@property
 	def devices(self):
 		maping = LocDev.objects.filter(location=self)
@@ -54,17 +53,8 @@ class Location(models.Model):
 
 		maping = LocDev.objects.filter(location=self)
 		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
-		#print(self.device_set.all(), "is the devices associated with ", self.id)
-		#little_ret=[]
-		#for device in self.device_set.all():
-		#	little_ret.append(device.get_json_object())
-		#print (little_ret)
-
-		#ret["devices"]=map(Device.get_json_object(), self.device_set.all())
-		#ret["devices"]=little_ret
 		ret["devices"]=item_ret
-
-
+		
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
@@ -78,8 +68,6 @@ class Device(models.Model):
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	type_equip   = models.CharField(max_length=200)
-	#location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE) #THIS IS WHAT IS CHANGED
-	#how to have a device at two locations? THIS IS BAD
 	def get_json_object(self):
 		ret={}
 		ret["device_name"]= self.device_name #example FEA
@@ -117,9 +105,6 @@ class Item(models.Model):
 			return key.get_json_object()
 		ret ={}
 		ret["barcode_num"]=self.item_barcode_num # needs to be set
-		#ret["item_type"]=self.item_type
-
-		#ret["questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
 		return str(self.item_barcode_num)
