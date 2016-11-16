@@ -7,8 +7,9 @@ class UserFactory(object):
         self.locations = Location.objects.all()
         print(self.locations)
         self.names = set([loc.user_assigned for loc in self.locations])
+        self.names.sort()
         self.users = []
-        for name in self.names:
+        for name in sorted(self.names):
         	self.users.append(User(name))
     def __getitem__(self, item):
         if item >= len(self.users):

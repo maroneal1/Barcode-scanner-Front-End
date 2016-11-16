@@ -120,7 +120,6 @@ def addlocation(request):
 		devices_to_add=received_json_data["devices_to_add"]
 
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name, user_assigned=user_assigned)
-		locdev=LocDev.objects.create() #location for locdev obj = self
 
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
@@ -165,7 +164,7 @@ def addanswers(request):
 			loc_id=answer["loc_id"]
 			user=answer["user"]
 			answer_text=answer["answer_text"]
-			
+
 			if "question_id" in answer:
 				question_id=answer["question_id"]
 				question_entry=Question.objects.get(id=question_id)
