@@ -1,19 +1,21 @@
 {% extends 'questions/base.html' %}
-
+{% load staticfiles %}
+{% block sheet %}{% static 'questions/location_view.css' %}{% endblock %}
 {% block Locations %}active{% endblock %}
 
 {% block body %}
     <h2>Location: {{location.loc_name}} <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></h2>
     <h4>Owner: {{location.user_assigned}} </h4>
 <div class="card-block">
-<div class="row">
-<div class="col-sm-3"> Device name</div>
-<div class="col-sm-3 "> Device Type</div>
-<div class="col-sm-3 "> Manufacturer</div>
-<div class="col-sm-2 "> Model Number</div>
-</div>
-<ul>
   <ul class="list-group">
+    <li>
+    <div class="row">
+    <div class="col-sm-3 "> Device name</div>
+    <div class="col-sm-3 "> Device Type</div>
+    <div class="col-sm-3 "> Manufacturer</div>
+    <div class="col-sm-2 "> Model Number</div>
+    </div>
+  </li>
     {% for ims in location.devices %}
 
         <a href="#" class="list-group-item">

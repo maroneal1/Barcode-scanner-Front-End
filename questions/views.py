@@ -130,17 +130,8 @@ def addlocation(request):
 			found_device=Device.objects.get(id=int(device_id))
 			print (found_device)
 			LocDev.objects.create(location=location, device=found_device) #Check me
-			#location.device_set.add(found_device)
-			#location.save()
-			#print (location.device_set, "is deviceset")
 
 		return HttpResponse("Correct")
-
-def add(request):
-	if request.method == 'POST':
-			q= Question(question_text=request.POST["question_text"], pub_date=timezone.now())
-			q.save()
-			return HttpResponse("Good work homie")
 
 
 #KYLES
@@ -148,10 +139,7 @@ def add(request):
 def questionsbyuser(request):
 	if request.method == 'POST':
 		user=request.POST["user"]
-		#filtered_items=Location.objects.filter(item__user_assigned=user)
 		filtered_items=Location.objects.all()
-		#filtered_items=LocDev.objects.all()
-	#	return cors_json({'data': map (LocDev.get_json_object, filtered_items)})
 		return cors_json({'data': map (Location.get_json_object, filtered_items)})
 
 @csrf_exempt
@@ -172,15 +160,4 @@ def addanswers(request):
 				taco= "I am a note"
 			question_entry.choice_set.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered)
 
-			'''	item_entry=location_entry.item_set.get(item_barcode_num=item_barcode)
-
-				location_entry.item_set.filter(item_barcode_num = item_barcode).update(person_scanned=person_scanned)
-				location_entry.item_set.filter(item_barcode_num = item_barcode).update(time_scanned=time_scanned)
-				for question in item_questions:
-					question_real=item_entry.question_set.get(question_text=question["question_text"])
-					question_real.choice_set.create(choice_text=question["question_answer"])
-			for question in questions_for_loc_only:
-				question_real=location_entry.question_set.get(question_text=question["question_text"])
-				question_real.choice_set.create(choice_text=question["question_answer"])
-		'''
 		return HttpResponse("Good work homie")

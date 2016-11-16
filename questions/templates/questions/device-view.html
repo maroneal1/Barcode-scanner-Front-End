@@ -1,5 +1,6 @@
 {% extends 'questions/base.html' %}
-
+{% load staticfiles %}
+{% block sheet %}{% static 'questions/device_view.css' %}{% endblock %}
 {% block Devices %}active{% endblock %}
 
 {% block body %}
@@ -22,6 +23,16 @@
   </ul>
 </ul>
 
+</div>
+<div class="container">
+  <form>
+    <div class="input-group">
+       <input type="text" class="form-control" placeholder="Barcode">
+       <span class="input-group-btn">
+            <button class="btn btn-primary" on type="button">Add Barcode</button>
+       </span>
+    </div>
+  </form>
 </div>
 
 {% endblock %}
