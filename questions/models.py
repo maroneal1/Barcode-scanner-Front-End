@@ -50,7 +50,7 @@ class Location(models.Model):
 		ret["loc_barcode_num"]=str(self.loc_barcode_num)
 		ret["loc_barcode_name"]=self.loc_name
 		ret["location_id"]=self.id
-
+		ret["user_assigned"]=self.user_assigned
 		maping = LocDev.objects.filter(location=self)
 		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
 		ret["devices"]=item_ret
