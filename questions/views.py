@@ -95,12 +95,14 @@ def adddevice(request):
 		type_equip=received_json_data["type"]
 		model_number=received_json_data["model_number"]
 		questions_for_the_device=received_json_data["questions"]
+		barcodes=received_json_data["barcodes"]
 
 		new_device=Device.objects.create(device_name=device_name, manufacturer=manu, type_equip=type_equip, model_number=model_number)
-
-		new_device.save()
+		for barcode in barcodes:
+			new_device.item_set.create(item_barcode_num=barcode)
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)
+		new_device.save()
 		return HttpResponse("Good work homie" + str(new_device.id))
 
 
@@ -157,17 +159,21 @@ def questionsbyuser(request):
 def addanswers(request):
 	if request.method == 'POST':
 		received_json_data=json.loads(request.body)["data"]
-		for loc_assessed in received_json_data:
-			loc_barcode=loc_assessed["barcode_num"]
-			location_entry=Location.objects.get(loc_barcode_num=loc_barcode)
-			questions_for_loc_only=loc_assessed["loc_questions"]
-			items=loc_assessed["items"]
-			for item in items:
-				time_scanned=item["time_scanned"]
-				item_barcode=item["barcode_num"]
-				person_scanned=item["person_scanned"]
-				item_questions=item["questions"]
-				item_entry=location_entry.item_set.get(item_barcode_num=item_barcode)
+		answers=received_json_data["answers"]
+		for answer in answers:
+			time_answered=answer["time_answered"]
+			loc_id=answer["loc_id"]
+			user=answer["user"]
+			answer_text=answer["answer_text"]
+			
+			if "question_id" in answer:
+				question_id=answer["question_id"]
+				question_entry=Question.objects.get(id=question_id)
+			else:
+				taco= "I am a note"
+			question_entry.choice_set.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered)
+
+			'''	item_entry=location_entry.item_set.get(item_barcode_num=item_barcode)
 
 				location_entry.item_set.filter(item_barcode_num = item_barcode).update(person_scanned=person_scanned)
 				location_entry.item_set.filter(item_barcode_num = item_barcode).update(time_scanned=time_scanned)
@@ -177,5 +183,5 @@ def addanswers(request):
 			for question in questions_for_loc_only:
 				question_real=location_entry.question_set.get(question_text=question["question_text"])
 				question_real.choice_set.create(choice_text=question["question_answer"])
-
+		'''
 		return HttpResponse("Good work homie")
