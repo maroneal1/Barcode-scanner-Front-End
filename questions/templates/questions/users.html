@@ -6,13 +6,13 @@
 <h2>Users</h2>
 
 
-  {% for aUsr in usrs %}
+  {% for usr in usrs %}
         <div class="container">
             <div class="panel-group">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                        <span id="name">{{aUsr.name}}</span>
+                        <span id="name">{{usr.name}}</span>
                       </h4>
                     </div>
                 </div>
@@ -25,8 +25,10 @@
                     </div>
                     <div id="collapse1" class="panel-collapse collapse">
                         <ul class="list-group">
-                          {% for loc in aUsr %}
+                          {% for loc in usr %}
+                          <a href="{% url 'questions:locationView' loc.id %}" class="list-group-item">
                             <li class="list-group-item">{{loc.loc_name}}</li>
+                            </a>
                           {% endfor %}
                         </ul>
                     </div>
