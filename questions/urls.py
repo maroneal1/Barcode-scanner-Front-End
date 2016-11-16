@@ -18,7 +18,7 @@ urlpatterns = [
     url(r'^questionsbyuser/$', views.questionsbyuser, name='questionsbyuser'),
     url(r'^addlocation/$', views.addlocation, name='addlocation'),
     url(r'^adddevice/$', views.adddevice, name='adddevice'),
-    url(r'^addanswers$', views.addanswers, name='addanswers'),
+    url(r'^addanswers/$', views.addanswers, name='addanswers'),
     url(r'^users$', views.users, name='users'),
     url(r'^login/$', auth_views.login),
 
