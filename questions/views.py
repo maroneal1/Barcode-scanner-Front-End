@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
+from django.contrib.auth import authenticate, login,logout
 
 import json
 
@@ -10,7 +11,7 @@ from questions.models import Question,Choice,Item,Location,Device,LocDev
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect
 from django.template import Context, loader
-
+from questions.UserContainers import User,UserFactory
 
 
 def cors_json(resp):
@@ -25,9 +26,16 @@ def cors_json(resp):
 def index(request):
 	return redirect(resdevices)
 
+def logout_view(request):
+    logout(request)
+    # Redirect to a success page.
 
+
+
+#@login_required
 def devices(request):
-	dev = Device.objects.all()
+	dev = list(Device.objects.all())
+	dev.sort()
 	items = {"devices":dev}
 	return render(request,'questions/devices.html',items)
 
@@ -36,8 +44,13 @@ def locations(request):
     items = {"Location":loc,}
     return render(request,'questions/location.html',items)
 
+def users(request):
+	return render(request,'questions/users.html',{'usrs':UserFactory()})
+
 def locationsadd(request):
-	return render(request, 'questions/location_form.html', {})
+	dev = Device.objects.all()
+	items = {"devices":dev}
+	return render(request, 'questions/location_form.html', items)
 
 def deviceadd(request):
 	return render(request, 'questions/device_add.html', {})
@@ -48,7 +61,8 @@ def recent_scaned(ques,n):
 	return out[-n:]
 
 def deviceView(request,dev_pk):
-	things = {'device': Device.objects.get(id=dev_pk)}
+	dev = Device.objects.get(id=dev_pk)
+	things = {'device': dev}
 	return render(request, 'questions/device-view.html', things)
 
 def locationView(request,loc_pk):
@@ -106,8 +120,7 @@ def addlocation(request):
 		devices_to_add=received_json_data["devices_to_add"]
 
 		location=Location.objects.create(loc_barcode_num=loc_barcode, loc_name=loc_name, user_assigned=user_assigned)
-		locdev=LocDev.objects.create() #location for locdev obj = self
-		
+
 		for locquest in questions_for_loc_only:
 			location.question_set.create(question_text=locquest)
 		for device_id in devices_to_add:
@@ -139,7 +152,7 @@ def addanswers(request):
 			loc_id=answer["loc_id"]
 			user=answer["user"]
 			answer_text=answer["answer_text"]
-			
+
 			if "question_id" in answer:
 				question_id=answer["question_id"]
 				question_entry=Question.objects.get(id=question_id)

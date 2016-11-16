@@ -5,11 +5,11 @@
 <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
   <link href='https://fonts.googleapis.com/css?family=Satisfy' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="{% static 'questions/style.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% block sheet %}{% endblock %}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="{% static 'questions/locations.js' %}"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'questions/style.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% block sheet %}{% endblock %}">
 
   <title>{% block title %}ArcelorMittal Safety Device Management System{% endblock %}</title>
 </head>
@@ -45,7 +45,7 @@
                   </a>
                 </li>
                 <li class="{% block Users %}{% endblock %}">
-                  <a href="#">
+                  <a href="{% url 'questions:users' %}">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Users
                   </a>
                 </li>

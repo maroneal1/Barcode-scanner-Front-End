@@ -20,10 +20,6 @@ label {
     margin-bottom: 1em;
 }
 
-.form-items {
-    margin-left: 3em;
-}
-
 .loc-question {
     margin-bottom: 1em;
 }
@@ -36,4 +32,17 @@ label {
 .add-loc-question {
     display: block;
     margin-bottom: 1em;
+}
+
+.custom-control {
+    margin-right: 1em;
+    margin-bottom: 1em;
+}
+
+#devices_label {
+    margin-bottom: 1em;
+}
+
+#device_id {
+  display: none;
 }
