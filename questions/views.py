@@ -73,10 +73,11 @@ class deviceView(View):
 		things = {'device': dev,'items':itms, 'dev_pk':dev_pk}
 		return render(request, 'questions/device-view.html', things)
 	def post(self, request,dev_pk):
+		print('why')
 		received_json_data=json.loads(request.body)
 		Item.objects.create(item_type=Device.objects.get(id=dev_pk),
 							item_barcode_num=received_json_data["barcode"])
-		return HttpResponse("Correct")				
+		return HttpResponse("Correct")
 
 def locationView(request,loc_pk):
 	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
