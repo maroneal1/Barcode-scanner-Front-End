@@ -7,7 +7,7 @@ app_name = "questions"
 
 urlpatterns = [
     url(r'^$', views.locations, name='index'),
-    url(r'^add/$', views.add, name='add'),
+    #url(r'^add/$', views.add, name='add'),
     url(r'^devices/$',views.devices,name='devices'),
     url(r'^device/view/(?P<dev_pk>[0-9]+)/$',views.deviceView,name="deviceView"),
     url(r'^location/$',views.locations, name='location'),
