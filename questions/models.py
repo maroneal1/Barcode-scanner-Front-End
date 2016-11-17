@@ -127,7 +127,7 @@ class Question(models.Model):
 class Choice(models.Model):
 	choice_text = models.CharField(max_length=200)
 	#This is going to be epoc time I want to ORDER BY Choice.time_scanned
-	time_scanned = models.IntegerField(default=0)
+	time_scanned = models.CharField(max_length=200, default= " ")
 	person_scanned = models.CharField(max_length=200, default= " ")
 	question= models.ForeignKey( Question, on_delete=models.CASCADE, null=True) #posted by users
 	location= models.ForeignKey( Location, on_delete=models.CASCADE, null=True) #posted by users
