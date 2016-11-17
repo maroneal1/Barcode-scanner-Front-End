@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login,logout
-from django.views import View
+from django.views.generic.base import View
 
 import json
 
