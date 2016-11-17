@@ -54,5 +54,10 @@ class Responce(Modleiter):
         self.ansers = ansers
 
     def __nonzero__(self):
-        out =
-        return out
+        try:
+            if self.ansers[0].choice_text == "yes":
+                return True
+            else:
+                return False
+        except IndexError:
+            return False
