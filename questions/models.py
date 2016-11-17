@@ -78,7 +78,8 @@ class Device(models.Model):
 		ret["model_num"]= self.model_number
 		ret["type_equip"]= self.type_equip
 		ret["barcodes"]= map(str,self.item_set.all())
-		ret["questions"]= map(Question.get_json_object,Question.objects.filter(item_assoc=self))
+		ret["questions"]= map(Question.get_json_object,
+							  Question.objects.filter(item_assoc=self))
 		return ret
 	def __gt__(self,other):
 		return self.device_name > other.device_name
@@ -113,9 +114,14 @@ class Item(models.Model):
 
 
 class Question(models.Model):
-	question_text = models.CharField(max_length=200) #field_example where is the pin?
-	item_assoc=models.ForeignKey( Device, on_delete=models.CASCADE, null=True)
-	location_assoc=models.ForeignKey( Location, on_delete=models.CASCADE, null=True)
+	#field_example where is the pin?
+	question_text = models.CharField(max_length=200)
+	item_assoc=models.ForeignKey(Device,
+								 on_delete=models.CASCADE,
+								 null=True)
+	location_assoc=models.ForeignKey(Location,
+									 on_delete=models.CASCADE,
+									 null=True)
 	def get_json_object(self):
 		ret ={}
 		ret["question_text"]=self.question_text
@@ -129,7 +135,11 @@ class Choice(models.Model):
 	#This is going to be epoc time I want to ORDER BY Choice.time_scanned
 	time_scanned = models.IntegerField(default=0)
 	person_scanned = models.CharField(max_length=200, default= " ")
-	question= models.ForeignKey( Question, on_delete=models.CASCADE, null=True) #posted by users
-	location= models.ForeignKey( Location, on_delete=models.CASCADE, null=True) #posted by users
+	question= models.ForeignKey(Question,
+								on_delete=models.CASCADE,
+								null=True) #posted by users
+	location= models.ForeignKey(Location,
+								on_delete=models.CASCADE,
+								null=True) #posted by users
 	def __str__(self):
 		return self.choice_text
