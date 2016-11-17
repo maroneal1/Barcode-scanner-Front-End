@@ -18,15 +18,25 @@
   </li>
     {% for dev in location.devices %}
 
-        <a href="{% url 'questions:deviceView' dev.id %}" class="list-group-item">
+        <a href="#collapse{{forloop.counter}}" class="list-group-item" data-toggle="collapse">
           <div class="row">
-          <div class="col-sm-3"> {{dev.device_name}} </div>
-          <div class="col-sm-3"> {{dev.type_equip}} </div>
-          <div class="col-sm-3"> {{dev.manufacturer}} </div>
-          <div class="col-sm-3"> {{dev.model_number}} </div>
-          <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+            <div class="col-sm-3"> {{dev.device_name}}  </div>
+            <div class="col-sm-3"> {{dev.type_equip}}   </div>
+            <div class="col-sm-3"> {{dev.manufacturer}} </div>
+            <div class="col-sm-3"> {{dev.model_number}} </div>
+            <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
           </div>
         </a>
+        <a href="{% url 'questions:deviceView' dev.id %}"/>
+        <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
+            <ul class="list-group">
+              {% for loc in usr %}
+              <a href="{% url 'questions:locationView' loc.id %}" class="list-group-item">
+                <li class="list-group-item">{{loc.loc_name}}</li>
+                </a>
+              {% endfor %}
+            </ul>
+        </div>
 
     {% endfor %}
   </ul>
