@@ -42,7 +42,17 @@ class StatDevice(Modleiter):
     def __init__(self,device,ansers):
         self.device = device
         self.questions = sef.device.questions
-        Choobjects.filter(client=client_id).order_by('-check_in')
+        self.things = []
+        for q in self.questions:
+            c = Choice.objects.filter(question=q).order_by('-time_scanned')
+            thing = Responce(q,c)
+            self.things.append(thing)
 
 class Responce(Modleiter):
     def __init__(self,question,ansers):
+        self.device = question
+        self.ansers = ansers
+
+    def __nonzero__(self):
+        out =
+        return out
