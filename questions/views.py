@@ -12,7 +12,7 @@ from questions.models import Question,Choice,Item,Location,Device,LocDev
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect
 from django.template import Context, loader
-from questions.CustomContainers import User,UserFactory
+from questions.CustomContainers import User,UserFactory,StatDeviceFactory
 from django.utils.decorators import method_decorator
 
 
@@ -80,15 +80,10 @@ class deviceView(View):
 def locationView(request,loc_pk):
 	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
 	location = Location.objects.get(id=loc_pk)
-	maping = LocDev.objects.filter(location=location)
-	#Device.objects.get(pk=
-	device = [Device.objects.get(pk=i.device.pk) for i in maping ]
-	lcoansers = ""#recent_scaned(Choice.objects.filter(location=location),1)
-	devansers = []
-	#for device in devices:
-		#devansers.append(Choice.object.filter(device))
+	dev = StatDeviceFactory(loc_pk)
 	things = {
 	'location': location,
+	'device' : dev,
 	}
 	return render(request, 'questions/location-view.html', things)
 

@@ -38,7 +38,7 @@ class StatDeviceFactory(Modleiter):
 
 
 
-class StatDevice(Modleiter):
+class StatDevice(object):
     def __init__(self,device,ansers):
         self.device = device
         self.questions = sef.device.questions
@@ -50,7 +50,7 @@ class StatDevice(Modleiter):
 
 class Responce(Modleiter):
     def __init__(self,question,ansers):
-        self.device = question
+        self.question = question
         self.ansers = ansers
 
     def __nonzero__(self):
