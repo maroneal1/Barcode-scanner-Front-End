@@ -26,7 +26,7 @@ TOP DOWN APPROACH
 
 #MAKE THE BARCODE_NUM UNIQUE
 class Location(models.Model):
-	loc_barcode_num = models.IntegerField(default=0, unique=True)
+	loc_barcode_num = models.CharField(max_length=200,default=" ", unique=True)
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
@@ -98,7 +98,7 @@ class LocDev(models.Model):
 
 class Item(models.Model):
 	item_type=models.ForeignKey( Device, on_delete=models.CASCADE)
-	item_barcode_num = models.IntegerField(default=0)
+	item_barcode_num = models.CharField(max_length=200,default=" ")
 
 	def get_json_object(self):
 		def access_lower_object_json(key):
