@@ -1,3 +1,7 @@
 .list-group-item {
   padding: .4em;
 }
+
+.panel-heading a:focus {
+  text-decoration: none;
+}
