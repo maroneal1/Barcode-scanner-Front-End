@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login,logout
+from django.views import View
 
 import json
 
@@ -11,7 +12,8 @@ from questions.models import Question,Choice,Item,Location,Device,LocDev
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect
 from django.template import Context, loader
-from questions.UserContainers import User,UserFactory
+from questions.CustomContainers import User,UserFactory
+from django.utils.decorators import method_decorator
 
 
 def cors_json(resp):
@@ -60,10 +62,20 @@ def recent_scaned(ques,n):
 	out.sort()
 	return out[-n:]
 
-def deviceView(request,dev_pk):
-	dev = Device.objects.get(id=dev_pk)
-	things = {'device': dev}
-	return render(request, 'questions/device-view.html', things)
+class deviceView(View):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, dev_pk):
+		return super(deviceView, self).dispatch(request, dev_pk)
+	def get(self, request,dev_pk):
+		dev = Device.objects.get(id=dev_pk)
+		itms = Item.objects.filter(item_type=dev)
+		things = {'device': dev,'items':itms, 'dev_pk':dev_pk}
+		return render(request, 'questions/device-view.html', things)
+	def post(self, request,dev_pk):
+		received_json_data=json.loads(request.body)
+		Item.objects.create(item_type=Device.objects.get(id=dev_pk),
+							item_barcode_num=received_json_data["barcode"])
+		return HttpResponse("Correct")
 
 def locationView(request,loc_pk):
 	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
@@ -148,7 +160,7 @@ def addanswers(request):
 		received_json_data=json.loads(request.body)["data"]
 		answers=received_json_data["answers"]
 		for answer in answers:
-			time_answered=answer["time_answered"]
+			time_answered= int(answer["time_answered"])
 			loc_id=answer["loc_id"]
 			user=answer["user"]
 			answer_text=answer["answer_text"]
