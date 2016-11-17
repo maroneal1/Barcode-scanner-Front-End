@@ -68,6 +68,8 @@ class Device(models.Model):
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	type_equip   = models.CharField(max_length=200)
+
+
 	def get_json_object(self):
 		ret={}
 		ret["device_name"]= self.device_name #example FEA
@@ -124,7 +126,8 @@ class Question(models.Model):
 
 class Choice(models.Model):
 	choice_text = models.CharField(max_length=200)
-	time_scanned = models.CharField(max_length=200, default= " ")
+	#This is going to be epoc time I want to ORDER BY Choice.time_scanned
+	time_scanned = models.IntegerField(default=0)
 	person_scanned = models.CharField(max_length=200, default= " ")
 	question= models.ForeignKey( Question, on_delete=models.CASCADE, null=True) #posted by users
 	location= models.ForeignKey( Location, on_delete=models.CASCADE, null=True) #posted by users

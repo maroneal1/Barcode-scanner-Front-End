@@ -12,7 +12,7 @@ from questions.models import Question,Choice,Item,Location,Device,LocDev
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response, render, redirect
 from django.template import Context, loader
-from questions.UserContainers import User,UserFactory
+from questions.CustomContainers import User,UserFactory
 from django.utils.decorators import method_decorator
 
 
@@ -160,7 +160,7 @@ def addanswers(request):
 		received_json_data=json.loads(request.body)["data"]
 		answers=received_json_data["answers"]
 		for answer in answers:
-			time_answered=answer["time_answered"]
+			time_answered= int(answer["time_answered"])
 			loc_id=answer["loc_id"]
 			user=answer["user"]
 			answer_text=answer["answer_text"]
