@@ -30,7 +30,7 @@ class Location(models.Model):
 	loc_name = models.CharField(max_length=200, default= " ")#floor1basement
 	admin = models.CharField(max_length=200) #should actually be payroll id
 	user_assigned = models.CharField(max_length=200)
-	
+
 	@property
 	def devices(self):
 		maping = LocDev.objects.filter(location=self)
@@ -54,7 +54,7 @@ class Location(models.Model):
 		maping = LocDev.objects.filter(location=self)
 		item_ret=[Device.objects.get(pk=i.device.pk).get_json_object() for i in maping ]
 		ret["devices"]=item_ret
-		
+
 		ret["loc_questions"]=map(access_lower_object_json, self.question_set.all())
 		return ret
 	def __str__(self):
@@ -68,6 +68,8 @@ class Device(models.Model):
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
 	type_equip   = models.CharField(max_length=200)
+
+
 	def get_json_object(self):
 		ret={}
 		ret["device_name"]= self.device_name #example FEA
@@ -76,7 +78,8 @@ class Device(models.Model):
 		ret["model_num"]= self.model_number
 		ret["type_equip"]= self.type_equip
 		ret["barcodes"]= map(str,self.item_set.all())
-		ret["questions"]= map(Question.get_json_object,Question.objects.filter(item_assoc=self))
+		ret["questions"]= map(Question.get_json_object,
+							  Question.objects.filter(item_assoc=self))
 		return ret
 	def __gt__(self,other):
 		return self.device_name > other.device_name
@@ -111,9 +114,14 @@ class Item(models.Model):
 
 
 class Question(models.Model):
-	question_text = models.CharField(max_length=200) #field_example where is the pin?
-	item_assoc=models.ForeignKey( Device, on_delete=models.CASCADE, null=True)
-	location_assoc=models.ForeignKey( Location, on_delete=models.CASCADE, null=True)
+	#field_example where is the pin?
+	question_text = models.CharField(max_length=200)
+	item_assoc=models.ForeignKey(Device,
+								 on_delete=models.CASCADE,
+								 null=True)
+	location_assoc=models.ForeignKey(Location,
+									 on_delete=models.CASCADE,
+									 null=True)
 	def get_json_object(self):
 		ret ={}
 		ret["question_text"]=self.question_text
@@ -124,9 +132,14 @@ class Question(models.Model):
 
 class Choice(models.Model):
 	choice_text = models.CharField(max_length=200)
-	time_scanned = models.CharField(max_length=200, default= " ")
+	#This is going to be epoc time I want to ORDER BY Choice.time_scanned
+	time_scanned = models.IntegerField(default=0)
 	person_scanned = models.CharField(max_length=200, default= " ")
-	question= models.ForeignKey( Question, on_delete=models.CASCADE, null=True) #posted by users
-	location= models.ForeignKey( Location, on_delete=models.CASCADE, null=True) #posted by users
+	question= models.ForeignKey(Question,
+								on_delete=models.CASCADE,
+								null=True) #posted by users
+	location= models.ForeignKey(Location,
+								on_delete=models.CASCADE,
+								null=True) #posted by users
 	def __str__(self):
 		return self.choice_text

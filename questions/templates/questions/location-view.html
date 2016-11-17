@@ -1,13 +1,12 @@
 {% extends 'questions/base.html' %}
-
+{% load staticfiles %}
+{% block sheet %}{% static 'questions/location_view.css' %}{% endblock %}
 {% block Locations %}active{% endblock %}
 
 {% block body %}
     <h2>Location: {{location.loc_name}} <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></h2>
     <h4>Owner: {{location.user_assigned}} </h4>
 <div class="card-block">
-
-<ul>
   <ul class="list-group">
     <li>
     <div class="row">
@@ -17,23 +16,26 @@
     <div class="col-sm-2 "> Model Number</div>
     </div>
   </li>
-    {% for ims in location.devices %}
+    {% for dev in location.devices %}
 
-        <a href="#" class="list-group-item">
+        <a href="#collapse{{forloop.counter}}" class="list-group-item" data-toggle="collapse">
           <div class="row">
-          <div class="col-sm-3"> {{ims.device_name}} </div>
-          <div class="col-sm-3">
-          {{ims.type_equip}}
+            <div class="col-sm-3"> {{dev.device_name}}  </div>
+            <div class="col-sm-3"> {{dev.type_equip}}   </div>
+            <div class="col-sm-3"> {{dev.manufacturer}} </div>
+            <div class="col-sm-3"> {{dev.model_number}} </div>
+            <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
           </div>
-          <div class="col-sm-3">
-          {{ims.manufacturer}}
-          </div>
-          <div class="col-sm-3">
-            {{ims.model_number}}
-          </div>
-          <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-            </div>
         </a>
+        <a href="{% url 'questions:deviceView' dev.id %}"/>
+        <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
+            <ul class="list-group">
+                <a href="#" class="list-group-item">
+                <li class="list-group-item">Thing One</li>
+                </a>
+
+            </ul>
+        </div>
 
     {% endfor %}
   </ul>
