@@ -124,7 +124,7 @@ class Question(models.Model):
 
 class Choice(models.Model):
 	choice_text = models.CharField(max_length=200)
-	time_scanned = models.CharField(max_length=200, default= " ")
+	time_scanned = models.IntegerField(default=0)
 	person_scanned = models.CharField(max_length=200, default= " ")
 	question= models.ForeignKey( Question, on_delete=models.CASCADE, null=True) #posted by users
 	location= models.ForeignKey( Location, on_delete=models.CASCADE, null=True) #posted by users
