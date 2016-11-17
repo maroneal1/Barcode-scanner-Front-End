@@ -4,4 +4,6 @@
 from questions.models import *
 
 class Stats(object):
-    pass
+
+    def __init__(self):
+        pass
