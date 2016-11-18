@@ -4,7 +4,13 @@
 {% block Locations %}active{% endblock %}
 
 {% block body %}
-    <h2>Location: {{location.loc_name}} <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></h2>
+    <h2>Location: {{location.loc_name}}
+      {% if device %}
+      <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+      {% else %}
+      <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      {% endif %}
+    </h2>
     <h4>Owner: {{location.user_assigned}} </h4>
 <div class="card-block">
   <ul class="list-group">
@@ -16,27 +22,33 @@
     <div class="col-sm-2 "> Model Number</div>
     </div>
   </li>
-    {% for dev in location.devices %}
-
+    {% for dev in device %}
         <a href="#collapse{{forloop.counter}}" class="list-group-item" data-toggle="collapse">
           <div class="row">
-            <div class="col-sm-3"> {{dev.device_name}}  </div>
-            <div class="col-sm-3"> {{dev.type_equip}}   </div>
-            <div class="col-sm-3"> {{dev.manufacturer}} </div>
-            <div class="col-sm-3"> {{dev.model_number}} </div>
+            <div class="col-sm-3"> {{dev.device.device_name}}  </div>
+            <div class="col-sm-3"> {{dev.device.type_equip}}   </div>
+            <div class="col-sm-3"> {{dev.device.manufacturer}} </div>
+            <div class="col-sm-3"> {{dev.device.model_number}} </div>
             <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
           </div>
         </a>
-        <a href="{% url 'questions:deviceView' dev.id %}"/>
+        <a href="{% url 'questions:deviceView' dev.device.id %}"/>
         <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
             <ul class="list-group">
+              {% for q in dev %}
                 <a href="#" class="list-group-item">
-                <li class="list-group-item">Thing One</li>
+                <li class="list-group-item">
+                  {{q.question.question_text}}
+                  {% if q %}
+                  <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {% else %}
+                  <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  {% endif %}
+                </li>
                 </a>
-
+              {% endfor %}
             </ul>
         </div>
-
     {% endfor %}
   </ul>
 </ul>

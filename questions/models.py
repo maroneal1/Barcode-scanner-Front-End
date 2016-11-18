@@ -43,6 +43,10 @@ class Location(models.Model):
 	@property
 	def questions(self):
 		return Question.objects.filter(location_assoc=self)
+	def __nonzero__(self):
+		#out = True
+		#for q in self.questions:
+		return False
 	def get_json_object(self):
 		def access_lower_object_json(key):
 			return key.get_json_object()

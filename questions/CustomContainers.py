@@ -30,27 +30,35 @@ class User(Modleiter):
 
 class StatDeviceFactory(Modleiter):
     def __init__(self,locID):
-        self.location = Location.objects.get(locID)
+        self.location = Location.objects.get(id=locID)
         self.ansers = Choice.objects.filter(location=self.location)
         self.things = []
         for dev in self.location.devices:
             self.things.append(StatDevice(dev,self.ansers))
-
+    def __nonzero__(self):
+        out = True
+        for i in self.things:
+            out &= i.__nonzero__()
+        return out
 
 
 class StatDevice(Modleiter):
     def __init__(self,device,ansers):
         self.device = device
-        self.questions = sef.device.questions
+        self.questions = self.device.questions
         self.things = []
         for q in self.questions:
             c = Choice.objects.filter(question=q).order_by('-time_scanned')
             thing = Responce(q,c)
             self.things.append(thing)
-
+    def __nonzero__(self):
+        out = True
+        for i in self.things:
+            out &= i.__nonzero__()
+        return out
 class Responce(Modleiter):
     def __init__(self,question,ansers):
-        self.device = question
+        self.question = question
         self.ansers = ansers
 
     def __nonzero__(self):

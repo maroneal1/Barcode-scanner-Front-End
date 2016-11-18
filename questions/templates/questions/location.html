@@ -10,7 +10,7 @@
     {% for loc in Location %}
         <a href="{% url 'questions:locationView' loc.id %}" class="list-group-item">
           {{loc.loc_name}}
-          <span class="glyphicon {% if loc.1 > 0 %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
+          <span class="glyphicon {% if loc %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
           <span class="text-align center pull-right">{{loc.num_devices}}</span>
         </a>
     {% endfor %}
