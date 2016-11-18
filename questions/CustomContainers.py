@@ -9,6 +9,20 @@ class Modleiter(object):
 
     def __len__(self):
         return len(self.things)
+    @property
+    def yes(self):
+        count = 0
+        for i in self.things:
+            if  i.__nonzero__():
+                count+=1
+        return count
+    @property
+    def no(self):
+        count = 0
+        for i in self.things:
+            if not i.__nonzero__():
+                count+=1
+        return count
 
 class UserFactory(Modleiter):
     def __init__(self,supervisor=None):
@@ -51,6 +65,7 @@ class StatDevice(Modleiter):
             c = Choice.objects.filter(question=q).order_by('-time_scanned')
             thing = Responce(q,c)
             self.things.append(thing)
+
     def __nonzero__(self):
         out = True
         for i in self.things:
