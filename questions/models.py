@@ -139,11 +139,7 @@ class Choice(models.Model):
 	#This is going to be epoc time I want to ORDER BY Choice.time_scanned
 	time_scanned = models.IntegerField(default=0)
 	person_scanned = models.CharField(max_length=200, default= " ")
-	question= models.ForeignKey(Question,
-								on_delete=models.CASCADE,
-								null=True) #posted by users
-	location= models.ForeignKey(Location,
-								on_delete=models.CASCADE,
-								null=True) #posted by users
+	question= models.ForeignKey(Question,on_delete=models.CASCADE,null=True) #posted by users
+	location= models.ForeignKey(Location,on_delete=models.CASCADE,null=True) #posted by users
 	def __str__(self):
 		return self.choice_text
