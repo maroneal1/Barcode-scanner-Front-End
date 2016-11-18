@@ -47,7 +47,7 @@ class Location(models.Model):
 		out = True
 		for q in self.questions:
 			try:
-				ch = Choice.objects.filter(location=self,question=q).order_by('time_scanned')[0]
+				ch = Choice.objects.filter(location=self,question=q).order_by('-time_scanned')[0]
 				if ch.choice_text =="yes":
 					out &= True
 				else:
@@ -140,10 +140,10 @@ class Question(models.Model):
 									 null=True)
 
 	def __nonzero__(self):
-		
+
 		out = True
 		try:
-			ch = Choice.objects.filter(question=self,location=self.location_assoc)[0]
+			ch = Choice.objects.filter(question=self,location=self.location_assoc).order_by('-time_scanned')[0]
 			if ch.choice_text !="yes":
 				out = False
 		except IndexError:
