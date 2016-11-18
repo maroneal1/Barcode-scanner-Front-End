@@ -29,7 +29,11 @@
             <div class="col-sm-3"> {{dev.device.type_equip}}   </div>
             <div class="col-sm-3"> {{dev.device.manufacturer}} </div>
             <div class="col-sm-3"> {{dev.device.model_number}} </div>
-            <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+            {% if dev %}
+            <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+            {% else %}
+            <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+            {% endif %}
           </div>
         </a>
         <a href="{% url 'questions:deviceView' dev.device.id %}"/>

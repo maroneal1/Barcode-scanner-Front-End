@@ -5,12 +5,13 @@ import os
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'mysite.settings'
 django.setup()
-from questions.models import Question,Device,LocDev
+from questions.models import Question,Device,LocDev,Choice,Location
+print Choice.objects.all()
 print Device.objects.all()
 print LocDev.objects.all()
-print Question.objects.filter(id=1)
-print Location.objects.filter(user=1)
-print Question.objects.filter(question_text__startswith='W')
-q = Question.objects.get(pk=1)
-print q, " IS QUESTION"
-print q.choice_set.all(), "IS POSSIBLE CHOices"
+#print Question.objects.filter(id=1)
+#print Location.objects.filter(user=1)
+#print Question.objects.filter(question_text__startswith='W')
+#q = Question.objects.get(pk=1)
+#print q, " IS QUESTION"
+#print q.choice_set.all(), "IS POSSIBLE CHOices"
