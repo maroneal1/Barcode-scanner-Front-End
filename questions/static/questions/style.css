@@ -46,3 +46,9 @@ body{
 #name {
   font-size: 20px;
 }
+.glyphicon-ok {
+    color: #5CB85C;
+}
+.glyphicon-remove {
+    color: #FF0000;
+}

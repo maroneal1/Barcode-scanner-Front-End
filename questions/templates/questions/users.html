@@ -5,8 +5,6 @@
 
 {% block body %}
 <h2>Users</h2>
-
-
   {% for usr in usrs %}
         <div class="container">
             <div class="panel-group">
@@ -29,7 +27,7 @@
                           {% for loc in usr %}
                           <a href="{% url 'questions:locationView' loc.id %}" class="list-group-item">
                             <li class="list-group-item">{{loc.loc_name}}</li>
-                            </a>
+                          </a>
                           {% endfor %}
                         </ul>
                     </div>

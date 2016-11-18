@@ -26,7 +26,7 @@ def cors_json(resp):
 
 @csrf_exempt
 def index(request):
-	return redirect(resdevices)
+	return render(request,'questions/index.html')
 
 def logout_view(request):
     logout(request)

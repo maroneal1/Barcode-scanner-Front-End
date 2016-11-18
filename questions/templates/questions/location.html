@@ -1,10 +1,7 @@
 {% extends 'questions/base.html' %}
-
 {% block Locations %}active{% endblock %}
-
 {% block body %}
     <h2>Locations</h2>
-
 <ul>
   <ul class="list-group">
     {% for loc in Location %}
@@ -20,7 +17,4 @@
 <a class="btn btn-primary" href="{% url 'questions:locationadd' %}">
   Add Location
 </a>
-
-
-
 {% endblock %}
