@@ -163,8 +163,10 @@ def addanswers(request):
 			if "question_id" in answer:
 				question_id=answer["question_id"]
 				question_entry=Question.objects.get(id=question_id)
+				loc_entry=Location.objects.get(id=loc_id)
 			else:
 				taco= "I am a note"
-			question_entry.choice_set.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered)
+			Choice.objects.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered, location=loc_entry, question=question_entry )
+			#question_entry.choice_set.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered)
 
 		return HttpResponse("Good work homie")
