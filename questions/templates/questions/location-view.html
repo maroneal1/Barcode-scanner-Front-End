@@ -17,7 +17,7 @@
     <li>
     <div class="row">
     <div class="col-sm-3 "> Device name</div>
-    <div class="col-sm-3 "> Device Type</div>
+    <div class="col-sm-3"> Device Type</div>
     <div class="col-sm-3 "> Manufacturer</div>
     <div class="col-sm-2 "> Model Number</div>
     </div>
@@ -26,14 +26,16 @@
         <a href="#collapse{{forloop.counter}}" class="list-group-item" data-toggle="collapse">
           <div class="row">
             <div class="col-sm-3"> {{dev.device.device_name}}  </div>
-            <div class="col-sm-3"> {{dev.device.type_equip}}   </div>
+            <div class="col-sm-2"> {{dev.device.type_equip}}   </div>
             <div class="col-sm-3"> {{dev.device.manufacturer}} </div>
-            <div class="col-sm-3"> {{dev.device.model_number}} </div>
-            {% if dev %}
-            <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
-            {% else %}
-            <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
-            {% endif %}
+            <div class="col-sm-3">
+              {{dev.device.model_number}}
+              {% if dev %}
+              <div class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></div>
+              {% else %}
+              <div class="glyphicon glyphicon-remove" aria-hidden="true"></div>
+              {% endif %}
+            </div>
           </div>
         </a>
         <a href="{% url 'questions:deviceView' dev.device.id %}"/>
