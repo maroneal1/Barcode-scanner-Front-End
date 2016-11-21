@@ -26,6 +26,12 @@ def cors_json(resp):
 
 @csrf_exempt
 def index(request):
+	# location = Location.objects.get(id=loc_pk)
+	# dev = StatDeviceFactory(loc_pk)
+	# things = {
+	# 'location': location,
+	# 'device' : dev,
+	# }
 	return render(request,'questions/index.html')
 
 def logout_view(request):
