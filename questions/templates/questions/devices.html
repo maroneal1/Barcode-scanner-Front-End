@@ -1,5 +1,6 @@
 {% extends 'questions/base.html' %}
-
+{% load staticfiles %}
+{% block sheet %}{% static 'questions/devices.css' %}{% endblock %}
 {% block Devices %}active{% endblock %}
 
 {% block body %}
@@ -8,10 +9,12 @@
     <ul>
       <ul class="list-group">
         {% for device in devices %}
-            <a href="{% url 'questions:deviceView' device.id %}" class="list-group-item">
-              {{device.device_name}}
-              <span class="pull-right">{{device.type_equip}}</span>
-            </a>
+        <li class="list-group-item">
+            <a href="{% url 'questions:deviceView' device.id %}">{{device.device_name}}</a>
+            <a href="#" class="pull-right pad-left">Remove</a>
+            <a href="#" class="pull-right pad-left">Edit</a>
+            <span class="pull-right">{{device.type_equip}}</span>
+        </li>
         {% endfor %}
       </ul>
     </ul>

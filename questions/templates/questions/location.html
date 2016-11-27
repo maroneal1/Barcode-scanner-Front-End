@@ -1,17 +1,20 @@
 {% extends 'questions/base.html' %}
+{% load staticfiles %}
+{% block sheet %}{% static 'questions/locations.css' %}{% endblock %}
 {% block Locations %}active{% endblock %}
 {% block body %}
-    <h2>Locations</h2>
-<ul>
-  <ul class="list-group">
+
+<h2>Locations</h2>
+<ul class="list-group">
     {% for loc in Location %}
-        <a href="{% url 'questions:locationView' loc.id %}" class="list-group-item">
-          {{loc.loc_name}}
-          <span class="glyphicon {% if loc %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
-          <span class="text-align center pull-right">{{loc.num_devices}}</span>
-        </a>
+    <li class="list-group-item">
+        <a href="#" class="pull-right pad-left">Remove</a>
+        <a href="#" class="pull-right pad-left">Edit</a>
+        <a href="{% url 'questions:locationView' loc.id %}">{{loc.loc_name}}</a>
+        <span class="glyphicon {% if loc %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
+        <span class="text-align center pull-right">{{loc.num_devices}}</span>
+    </li>
     {% endfor %}
-  </ul>
 </ul>
 
 <a class="btn btn-primary" href="{% url 'questions:locationadd' %}">
