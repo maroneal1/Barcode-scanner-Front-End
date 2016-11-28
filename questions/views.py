@@ -93,6 +93,25 @@ def locationView(request,loc_pk):
 #GETDEVICES URL-> send key from DB.
 
 
+
+
+@csrf_exempt
+def delete(request):
+	if request.method == 'POST':
+		received_json_data=json.loads(request.body)
+		if "device" in received_json_data and "barcode" in received_json_data:
+			instance=Device.objects.get(id=int(received_json_data["device"]))
+			instance_barcode=instance.item_set.get(item_barcode_num=int(received_json_data["barcode"]))
+			instance_barcode.delete()
+			#delete
+		if "device" in received_json_data:
+			instance=Device.objects.get(id=int(received_json_data["device"]))
+			instance.delete()
+		if "location" in received_json_data:
+			instance=Location.objects.get(id=int(recieved_json_data["location"]))
+		return HttpResponse("Success, deleted: ")
+
+
 @csrf_exempt
 def adddevice(request):
 	if request.method == 'POST':
@@ -110,7 +129,7 @@ def adddevice(request):
 		for question in questions_for_the_device:
 			new_device.question_set.create(question_text=question)
 		new_device.save()
-		return HttpResponse("Good work homie" + str(new_device.id))
+		return HttpResponse("Sucess, id added is:" + str(new_device.id))
 
 
 
@@ -169,4 +188,4 @@ def addanswers(request):
 			Choice.objects.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered, location=loc_entry, question=question_entry )
 			#question_entry.choice_set.create(choice_text=answer_text, person_scanned=user, time_scanned=time_answered)
 
-		return HttpResponse("Good work homie")
+		return HttpResponse("Sucessful")
