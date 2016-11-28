@@ -1,3 +1,7 @@
 .pad-left {
   padding-left: 1em;
 }
+
+#loc_id {
+  display: none;
+}
