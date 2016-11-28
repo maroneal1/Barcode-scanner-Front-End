@@ -52,3 +52,7 @@ body{
 .glyphicon-remove {
     color: #FF0000;
 }
+
+#pieChart {
+  text-align: center;
+}
