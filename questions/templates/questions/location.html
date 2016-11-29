@@ -8,8 +8,8 @@
 <ul class="list-group">
     {% for loc in Location %}
     <li class="list-group-item">
-        <a href="#" class="pull-right pad-left">Remove</a>
-        <a href="#" class="pull-right pad-left">Edit</a>
+        <span id="loc_id">{{loc.id}}</span>
+        <a onclick="jsfunction()" href="javascript:void(0);" class="pull-right pad-left">Remove</a>
         <a href="{% url 'questions:locationView' loc.id %}">{{loc.loc_name}}</a>
         <span class="glyphicon {% if loc %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
         <span class="text-align center pull-right">{{loc.num_devices}}</span>

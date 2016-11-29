@@ -9,3 +9,7 @@
 .pad-left {
   padding-left: 1em;
 }
+
+#device_id {
+  display: none;
+}
