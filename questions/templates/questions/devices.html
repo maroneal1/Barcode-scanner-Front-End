@@ -10,9 +10,9 @@
       <ul class="list-group">
         {% for device in devices %}
         <li class="list-group-item">
-            <span id="device_id">{{device.id}}</span>
+            <span class="device_id">{{device.id}}</span>
             <a href="{% url 'questions:deviceView' device.id %}">{{device.device_name}}</a>
-            <a onclick="jsfunction()" href="javascript:void(0);" class="pull-right pad-left">Remove</a>
+            <a onclick="delete_device($(this))" href="javascript:void(0);" class="pull-right pad-left">Remove</a>
             <span class="pull-right">{{device.type_equip}}</span>
         </li>
         {% endfor %}
@@ -22,5 +22,27 @@
     <a class="btn btn-primary" href="{% url 'questions:deviceadd' %}">
       Add Device
     </a>
+
+    <script>
+        function delete_device(link) {
+            var to_delete = {};
+            to_delete['device'] = link.parent().find(".device_id").text();
+
+            console.log(JSON.stringify(to_delete));
+
+            $.ajax({
+                url: "/questions/delete/",
+                type: "POST",
+                data: JSON.stringify(to_delete),
+                contentType: "application/json",
+                success: function() {
+                    location.reload();
+                },
+                error: function() {
+                    alert('Server error. Could not delete device.');
+                }
+            });
+        }
+    </script>
 
 {% endblock %}

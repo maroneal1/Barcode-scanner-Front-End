@@ -110,11 +110,11 @@ def delete(request):
 			instance_barcode=instance.item_set.get(item_barcode_num=int(received_json_data["barcode"]))
 			instance_barcode.delete()
 			#delete
-		if "device" in received_json_data:
+		if "device" in received_json_data and "barcode" not in received_json_data:
 			instance=Device.objects.get(id=int(received_json_data["device"]))
 			instance.delete()
 		if "location" in received_json_data:
-			instance=Location.objects.get(id=int(recieved_json_data["location"]))
+			instance=Location.objects.get(id=int(received_json_data["location"]))
 		return HttpResponse("Success, deleted: ")
 
 

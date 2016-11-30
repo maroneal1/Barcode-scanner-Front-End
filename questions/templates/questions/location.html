@@ -8,10 +8,10 @@
 <ul class="list-group">
     {% for loc in Location %}
     <li class="list-group-item">
-        <span id="loc_id">{{loc.id}}</span>
-        <a onclick="jsfunction()" href="javascript:void(0);" class="pull-right pad-left">Remove</a>
+        <span class="loc_id">{{loc.id}}</span>
+        <a onclick="delete_location($(this))" href="javascript:void(0);" class="pull-right pad-left">Remove</a>
         <a href="{% url 'questions:locationView' loc.id %}">{{loc.loc_name}}</a>
-        <span class="glyphicon {% if loc %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right" aria-hidden="true"></span>
+        <span class="glyphicon {% if loc %}glyphicon-ok{% else %}glyphicon-remove{% endif %} pull-right pad-top" aria-hidden="true"></span>
         <span class="text-align center pull-right">{{loc.num_devices}}</span>
     </li>
     {% endfor %}
@@ -20,4 +20,26 @@
 <a class="btn btn-primary" href="{% url 'questions:locationadd' %}">
   Add Location
 </a>
+
+<script>
+      function delete_location(link) {
+          var to_delete = {};
+          to_delete['location'] = link.prev().text();
+
+          console.log(JSON.stringify(to_delete));
+
+          $.ajax({
+              url: "/questions/delete/",
+              type: "POST",
+              data: JSON.stringify(to_delete),
+              contentType: "application/json",
+              success: function() {
+                  location.reload();
+              },
+              error: function() {
+                  alert('Server error. Could not delete location.');
+              }
+          });
+      }
+  </script>
 {% endblock %}
