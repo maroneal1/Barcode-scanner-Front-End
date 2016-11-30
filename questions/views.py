@@ -115,6 +115,7 @@ def delete(request):
 			instance.delete()
 		if "location" in received_json_data:
 			instance=Location.objects.get(id=int(received_json_data["location"]))
+			instance.delete()
 		return HttpResponse("Success, deleted: ")
 
 
