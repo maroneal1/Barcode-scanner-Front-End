@@ -32,7 +32,28 @@ def index(request):
 	# 'location': location,
 	# 'device' : dev,
 	# }
-	return render(request,'questions/index.html')
+	location_good = 0
+	location_bad = 0
+	item_good = 0
+	item_bad = 0
+	for q in Question.objects.filter(item_assoc=None):
+		if q:
+			location_good +=1
+		else:
+			location_bad +=1
+	for q in Question.objects.filter(location_assoc=None):
+		if q:
+			item_good +=1
+		else:
+			item_bad +=1
+	stuff = {
+	"location_good":location_good,
+	"location_bad":location_bad,
+	"item_good":item_good,
+	"item_bad":item_bad,
+	#"total": item_bad + item_good + location_bad + location_good,
+	}
+	return render(request,'questions/index.html',stuff)
 
 def logout_view(request):
     logout(request)
