@@ -3,22 +3,25 @@
 {% block sheet %}{% static 'questions/users.css' %}{% endblock %}
 {% block body %}
 
-<div id="pieChart"></div>
+<div class="pie_container">
+    <h2 style="align:center" id="pie_chart_title">Location Inspection Statistics</h2>
+    <div id="pieChart"></div>
+</div>
 
 <script>
     var pie = new d3pie("pieChart", {
-        "header": {
-            "title": {
-                "text": "Location Inspection Statistics",
-                "fontSize": 28
-            },
-            // "subtitle": {
-            //     "text": "Number of Location and Item Questions that are passing and failing",
-            //     "color": "#999999",
-            //     "fontSize": 20
-            // },
-            // "titleSubtitlePadding": 5
-        },
+        // "header": {
+        //     "title": {
+        //         "text": "Location Inspection Statistics",
+        //         "fontSize": 28
+        //     },
+        //     // "subtitle": {
+        //     //     "text": "Number of Location and Item Questions that are passing and failing",
+        //     //     "color": "#999999",
+        //     //     "fontSize": 20
+        //     // },
+        //     // "titleSubtitlePadding": 5
+        // },
         "size": {
             "canvasHeight": 600,
             "canvasWidth": 800,
