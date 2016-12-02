@@ -11,7 +11,8 @@
       <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
       {% endif %}
     </h2>
-    <p>Owner: {{location.user_assigned}} </p>
+    <span>Owner: {{location.user_assigned}} </span>
+    <a class="pad-left" onclick="change_user($(this))" href="javascript:void(0);">Change</a>
     <p>Barcode: {{location.loc_barcode_num}}</p>
 
 <h4>Questions:</h4>
@@ -86,6 +87,31 @@
   </ul>
 </ul>
 
+<script>
+  function change_user(link) {
+    var new_user = prompt("Please enter the new user to assign to this location", "New User");
+    if (new_user != null) {
+      var data = {};
+      data['newuser'] = new_user;
+
+      console.log(JSON.stringify(data));
+
+      $.ajax({
+          url: "chusr/",
+          type: "POST",
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          success: function() {
+              location.reload();
+          },
+          error: function() {
+              alert('Server error. Could not change user.');
+          }
+      });
+    }
+  }
+
+</script>
 
 
 {% endblock %}
