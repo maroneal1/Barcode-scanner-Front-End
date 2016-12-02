@@ -1,7 +1,89 @@
 {% extends 'questions/base.html' %}
-
+{% load staticfiles %}
+{% block sheet %}{% static 'questions/users.css' %}{% endblock %}
 {% block body %}
 
+<div id="pieChart"></div>
 
+<script>
+    var pie = new d3pie("pieChart", {
+        "header": {
+            "title": {
+                "text": "Location Inspection Statistics",
+                "fontSize": 28
+            },
+            // "subtitle": {
+            //     "text": "Number of Location and Item Questions that are passing and failing",
+            //     "color": "#999999",
+            //     "fontSize": 20
+            // },
+            // "titleSubtitlePadding": 5
+        },
+        "size": {
+            "canvasHeight": 600,
+            "canvasWidth": 800,
+            "pieOuterRadius": "58%"
+        },
+        "data": {
+            "sortOrder": "label-asc",
+            "content": [{
+                "label": "Passing Location Questions",
+                "value": {{location_good}},
+                "color": "#31da6f"
+            }, {
+                "label": "Failing Location Questions",
+                "value": {{location_bad}},
+                "color": "#e61414"
+            }, {
+                "label": "Passing Item Questions",
+                "value": {{item_good}},
+                "color": "#48d74a"
+            }, {
+                "label": "Failing Item Questions",
+                "value": {{item_bad}},
+                "color": "#ae1414"
+            }]
+        },
+        "labels": {
+            "outer": {
+                "pieDistance": 15
+            },
+            "inner": {
+                "format": "value",
+                "hideWhenLessThanPercentage": 3
+            },
+            "mainLabel": {
+                "fontSize": 18
+            },
+            "percentage": {
+                "color": "#ffffff",
+                "decimalPlaces": 0
+            },
+            "value": {
+                "color": "#000000",
+                "fontSize": 16
+            },
+            "lines": {
+                "enabled": true
+            },
+            "truncation": {
+                "enabled": true
+            }
+        },
+        "effects": {
+            "pullOutSegmentOnClick": {
+                "effect": "linear",
+                "speed": 400,
+                "size": 8
+            }
+        },
+        "misc": {
+            "gradient": {
+                "enabled": true,
+                "percentage": 100
+            }
+        }
+    });
+</script>
 
 {% endblock %}

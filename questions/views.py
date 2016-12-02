@@ -26,7 +26,34 @@ def cors_json(resp):
 
 @csrf_exempt
 def index(request):
-	return redirect(resdevices)
+	# location = Location.objects.get(id=loc_pk)
+	# dev = StatDeviceFactory(loc_pk)
+	# things = {
+	# 'location': location,
+	# 'device' : dev,
+	# }
+	location_good = 0
+	location_bad = 0
+	item_good = 0
+	item_bad = 0
+	for q in Question.objects.filter(item_assoc=None):
+		if q:
+			location_good +=1
+		else:
+			location_bad +=1
+	for q in Question.objects.filter(location_assoc=None):
+		if q:
+			item_good +=1
+		else:
+			item_bad +=1
+	stuff = {
+	"location_good":location_good,
+	"location_bad":location_bad,
+	"item_good":item_good,
+	"item_bad":item_bad,
+	#"total": item_bad + item_good + location_bad + location_good,
+	}
+	return render(request,'questions/index.html',stuff)
 
 def logout_view(request):
     logout(request)
@@ -104,11 +131,12 @@ def delete(request):
 			instance_barcode=instance.item_set.get(item_barcode_num=int(received_json_data["barcode"]))
 			instance_barcode.delete()
 			#delete
-		if "device" in received_json_data:
+		if "device" in received_json_data and "barcode" not in received_json_data:
 			instance=Device.objects.get(id=int(received_json_data["device"]))
 			instance.delete()
 		if "location" in received_json_data:
-			instance=Location.objects.get(id=int(recieved_json_data["location"]))
+			instance=Location.objects.get(id=int(received_json_data["location"]))
+			instance.delete()
 		return HttpResponse("Success, deleted: ")
 
 

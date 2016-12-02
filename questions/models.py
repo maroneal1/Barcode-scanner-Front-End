@@ -44,9 +44,17 @@ class Location(models.Model):
 	def questions(self):
 		return Question.objects.filter(location_assoc=self)
 	def __nonzero__(self):
-		#out = True
-		#for q in self.questions:
-		return False
+		out = True
+		for q in self.questions:
+			try:
+				ch = Choice.objects.filter(location=self,question=q).order_by('-time_scanned')[0]
+				if ch.choice_text =="yes":
+					out &= True
+				else:
+					out &= False
+			except IndexError:
+				out &=False
+		return out
 	def get_json_object(self):
 		def access_lower_object_json(key):
 			return key.get_json_object()
@@ -94,8 +102,12 @@ class Device(models.Model):
 
 
 class LocDev(models.Model):
-	location=models.ForeignKey( Location, null=True, on_delete=models.CASCADE)
-	device=models.ForeignKey( Device, null=True, on_delete=models.CASCADE)
+	location=models.ForeignKey(Location,
+							   null=True,
+							   on_delete=models.CASCADE)
+	device=models.ForeignKey(Device,
+							 null=True,
+							 on_delete=models.CASCADE)
 	def __str__(self):
 		return(" and locaction: " )#+ str(self.location_set.all()))
 	def get_json_object(self):
@@ -126,6 +138,17 @@ class Question(models.Model):
 	location_assoc=models.ForeignKey(Location,
 									 on_delete=models.CASCADE,
 									 null=True)
+
+	def __nonzero__(self):
+
+		out = True
+		try:
+			ch = Choice.objects.filter(question=self,location=self.location_assoc).order_by('-time_scanned')[0]
+			if ch.choice_text !="yes":
+				out = False
+		except IndexError:
+			out =False
+		return out
 	def get_json_object(self):
 		ret ={}
 		ret["question_text"]=self.question_text
@@ -139,7 +162,11 @@ class Choice(models.Model):
 	#This is going to be epoc time I want to ORDER BY Choice.time_scanned
 	time_scanned = models.IntegerField(default=0)
 	person_scanned = models.CharField(max_length=200, default= " ")
-	question= models.ForeignKey(Question,on_delete=models.CASCADE,null=True) #posted by users
-	location= models.ForeignKey(Location,on_delete=models.CASCADE,null=True) #posted by users
+	question= models.ForeignKey(Question,
+								on_delete=models.CASCADE,
+								null=True) #posted by users
+	location= models.ForeignKey(Location,
+								on_delete=models.CASCADE,
+								null=True) #posted by users
 	def __str__(self):
 		return self.choice_text

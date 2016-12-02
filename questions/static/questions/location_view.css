@@ -1,3 +1,11 @@
 ul {
   list-style: none;
 }
+
+.col-sm-3 {
+  vertical-align: middle;
+}
+
+.col-sm-3 .glyphicon {
+  top: .11em;
+}

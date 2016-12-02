@@ -4,20 +4,20 @@
 {% block Devices %}active{% endblock %}
 
 {% block body %}
-    <h2>{{device.device_name}} <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span></h2>
-    <h4>Device Type: {{device.type_equip}} </h4>
-    <h4>Manufacturer: {{device.manufacturer}} </h4>
-    <h4>Model Number: {{device.model_number}} </h4>
+    <h2>{{device.device_name}}</h2>
+    <h4>Device Type: {{device.type_equip}}</h4>
+    <h4>Manufacturer: {{device.manufacturer}}</h4>
+    <h4>Model Number: {{device.model_number}}</h4>
 <div class="card-block">
 
+<h4 id="question_list_header">Questions</h4>
 <ul>
   <ul class="list-group">
     {% for q in device.questions %}
     <div class="row">
-        <a href="#" class="list-group-item">
-           {{q.question_text}}
-          <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-        </a>
+      <li class="list-group-item">
+        <span>{{q.question_text}}</span>
+      </li>
     </div>
     {% endfor %}
   </ul>
@@ -28,10 +28,10 @@
   <ul class="list-group">
     {% for item in items %}
     <div class="row">
-        <a href="#" class="list-group-item">
-           {{item.item_barcode_num}}
-          <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
-        </a>
+      <li class="list-group-item">
+        <a onclick="delete_barcode($(this))" href="javascript:void(0)" class="pull-right">Remove</a>
+        <span class="barcode">{{item.item_barcode_num}}</span>
+      </li>
     </div>
     {% endfor %}
   </ul>
@@ -71,6 +71,27 @@
       });
     };
 
+    function delete_barcode(link) {
+        var to_delete = {};
+        to_delete['device'] = {{device.id}};
+        to_delete['barcode'] = link.next().text();
+
+        console.log(JSON.stringify(to_delete));
+
+        $.ajax({
+            url: "/questions/delete/",
+            type: "POST",
+            data: JSON.stringify(to_delete),
+            contentType: "application/json",
+            success: function() {
+                location.reload();
+            },
+            error: function() {
+                alert('Server error. Could not delete barcode.');
+            }
+        });
+    }
 </script>
+
 
 {% endblock %}

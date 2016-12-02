@@ -5,54 +5,90 @@
 
 {% block body %}
     <h2>Location: {{location.loc_name}}
-      {% if device %}
+      {% if location %}
       <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
       {% else %}
-      <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
       {% endif %}
     </h2>
-    <h4>Owner: {{location.user_assigned}} </h4>
+    <p>Owner: {{location.user_assigned}} </p>
+    <p>Barcode: {{location.loc_barcode_num}}</p>
+
+<h4>Questions:</h4>
+
+
+  <ul class="list-group">
+          {% for q in location.questions %}
+
+            <li class="list-group-item">
+              {{q.question_text}}
+              {% if q %}
+              <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+              {% else %}
+              <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+              {% endif %}
+            </li>
+
+          {% endfor %}
+        </ul>
+
+
+<h4>Devices:</h4>
 <div class="card-block">
   <ul class="list-group">
     <li>
     <div class="row">
     <div class="col-sm-3 "> Device name</div>
-    <div class="col-sm-3 "> Device Type</div>
+    <div class="col-sm-3"> Device Type</div>
     <div class="col-sm-3 "> Manufacturer</div>
     <div class="col-sm-2 "> Model Number</div>
     </div>
   </li>
     {% for dev in device %}
+<div class="card-block">
         <a href="#collapse{{forloop.counter}}" class="list-group-item" data-toggle="collapse">
           <div class="row">
-            <div class="col-sm-3"> {{dev.device.device_name}}  </div>
-            <div class="col-sm-3"> {{dev.device.type_equip}}   </div>
+            <div class="col-sm-3">
+              <object>
+            <span class="col-sm-3" href="{% url 'questions:deviceView' dev.device.id %}">
+              {{dev.device.device_name}}
+            </span>
+          </object>
+            </div>
+            <div class="col-sm-2"> {{dev.device.type_equip}}   </div>
             <div class="col-sm-3"> {{dev.device.manufacturer}} </div>
-            <div class="col-sm-3"> {{dev.device.model_number}} </div>
-            <!--<span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+            <div class="col-sm-3"> {{dev.device.model_number}}
+              {% if dev %}
+              <div class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></div>
+              {% else %}
+              <div class="glyphicon glyphicon-remove" aria-hidden="true"></div>
+              {% endif %}
+            </div>
           </div>
         </a>
-        <a href="{% url 'questions:deviceView' dev.device.id %}"/>
+
         <div id="collapse{{forloop.counter}}" class="panel-collapse collapse">
+          <h5>{{dev.device.device_name}} Questions:</h5>
             <ul class="list-group">
               {% for q in dev %}
-                <a href="#" class="list-group-item">
+
                 <li class="list-group-item">
                   {{q.question.question_text}}
                   {% if q %}
-                  <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
                   {% else %}
-                  <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
                   {% endif %}
                 </li>
-                </a>
+
               {% endfor %}
             </ul>
         </div>
+</div>
     {% endfor %}
   </ul>
 </ul>
-
 </div>
+
 
 {% endblock %}
