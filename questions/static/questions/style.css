@@ -53,6 +53,10 @@ body{
     color: #FF0000;
 }
 
-#pieChart {
+.pie_container {
   text-align: center;
+}
+
+#pie_chart_title {
+  margin-bottom: -3em;
 }
