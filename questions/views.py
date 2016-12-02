@@ -104,15 +104,15 @@ class deviceView(View):
 							item_barcode_num=received_json_data["barcode"])
 		return HttpResponse("Correct")
 
-class ChangeUser(request):
+class ChangeUser(View):
 	@method_decorator(csrf_exempt)
-	def dispatch(self, request, dev_pk):
-		return super(deviceView, self).dispatch(request, dev_pk)
-	def get(self, request,dev_pk):
+	def dispatch(self, request, loc_pk):
+		return super(ChangeUser, self).dispatch(request, loc_pk)
+	def get(self, request,loc_pk):
 		return Http404("Not for human eyes")
-	def post(self, request,dev_pk):
+	def post(self, request,loc_pk):
 		received_json_data=json.loads(request.body)
-		Location.objects.get(pk=dev_pk).update(user_assigned=received_json_data['newuser'])
+		Location.objects.filter(pk=loc_pk).update(user_assigned=received_json_data['newuser'])
 		return HttpResponse("Correct")
 
 def locationView(request,loc_pk):
