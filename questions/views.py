@@ -1,5 +1,5 @@
 from django.http import HttpResponse
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.shortcuts import render_to_response
 from django.contrib.auth import authenticate, login,logout
 from django.views.generic.base import View
@@ -104,6 +104,17 @@ class deviceView(View):
 							item_barcode_num=received_json_data["barcode"])
 		return HttpResponse("Correct")
 
+class ChangeUser(request):
+	@method_decorator(csrf_exempt)
+	def dispatch(self, request, dev_pk):
+		return super(deviceView, self).dispatch(request, dev_pk)
+	def get(self, request,dev_pk):
+		return Http404("Not for human eyes")
+	def post(self, request,dev_pk):
+		received_json_data=json.loads(request.body)
+		Location.objects.get(pk=dev_pk).update(user_assigned=received_json_data['newuser'])
+		return HttpResponse("Correct")
+
 def locationView(request,loc_pk):
 	#<!--{% #url 'questions:deviceView' loc.0.id %}-->
 	location = Location.objects.get(id=loc_pk)
@@ -186,6 +197,8 @@ def addlocation(request):
 			LocDev.objects.create(location=location, device=found_device) #Check me
 
 		return HttpResponse("Correct")
+
+
 
 
 #KYLES
