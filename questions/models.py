@@ -73,9 +73,7 @@ class Location(models.Model):
 		return str(self.loc_barcode_num)
 
 class Device(models.Model):
-	@property
-	def questions(self):
-		return Question.objects.filter(item_assoc=self)
+
 	device_name  = models.CharField(max_length=200)
 	manufacturer = models.CharField(max_length=200)
 	model_number = models.CharField(max_length=200)
@@ -93,6 +91,9 @@ class Device(models.Model):
 		ret["questions"]= map(Question.get_json_object,
 							  Question.objects.filter(item_assoc=self))
 		return ret
+	@property
+	def questions(self):
+		return Question.objects.filter(item_assoc=self)
 	def __gt__(self,other):
 		return self.device_name > other.device_name
 	def __lt__(self,other):
