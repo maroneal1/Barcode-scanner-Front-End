@@ -15,6 +15,7 @@ urlpatterns = [
     url(r'^location/add/$',views.locationsadd, name='locationadd'),
     url(r'^device/add/$',views.deviceadd, name='deviceadd'),
     url(r'^location/view/(?P<loc_pk>[0-9]+)/$',views.locationView,name="locationView"),
+    url(r'^location/view/(?P<loc_pk>[0-9]+)/chusr/$',views.ChangeUser.as_view(),name="changeYser"),
     url(r'^questionsbyuser/$', views.questionsbyuser, name='questionsbyuser'),
     url(r'^addlocation/$', views.addlocation, name='addlocation'),
     url(r'^adddevice/$', views.adddevice, name='adddevice'),

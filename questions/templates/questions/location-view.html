@@ -11,57 +11,56 @@
       <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
       {% endif %}
     </h2>
-    <p>Owner: {{location.user_assigned}} </p>
+    <span>Owner: {{location.user_assigned}} </span>
+    <a class="pad-left" onclick="change_user($(this))" href="javascript:void(0);">Change</a>
     <p>Barcode: {{location.loc_barcode_num}}</p>
 
 <h4>Questions:</h4>
 
 
   <ul class="list-group">
-          {% for q in location.questions %}
+      {% for q in location.questions %}
 
-            <li class="list-group-item">
-              {{q.question_text}}
-              {% if q %}
-              <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
-              {% else %}
-              <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
-              {% endif %}
-            </li>
+        <li class="list-group-item">
+          {{q.question_text}}
+          {% if q %}
+          <span class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
+          {% else %}
+          <span class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></span>
+          {% endif %}
+        </li>
 
-          {% endfor %}
-        </ul>
+      {% endfor %}
+  </ul>
 
 
 <h4>Devices:</h4>
-<div class="card-block">
+
   <ul class="list-group">
-    <li>
-    <div class="row">
-    <div class="col-sm-3 "> Device name</div>
-    <div class="col-sm-3"> Device Type</div>
-    <div class="col-sm-3 "> Manufacturer</div>
-    <div class="col-sm-2 "> Model Number</div>
-    </div>
-  </li>
+    <li class="list-group-item device_list_header">
+      <div class="row pad-left">
+      <div class="col-sm-3 "> Device name</div>
+      <div class="col-sm-3"> Device Type</div>
+      <div class="col-sm-3 "> Manufacturer</div>
+      <div class="col-sm-3 "> Model Number</div>
+      </div>
+    </li>
     {% for dev in device %}
-<div class="card-block">
+
         <a href="#collapse{{forloop.counter}}" class="list-group-item" data-toggle="collapse">
-          <div class="row">
+          <div class="row pad-left">
             <div class="col-sm-3">
-              <object>
-            <span class="col-sm-3" href="{% url 'questions:deviceView' dev.device.id %}">
+            <span  href="{% url 'questions:deviceView' dev.device.id %}">
               {{dev.device.device_name}}
             </span>
-          </object>
             </div>
-            <div class="col-sm-2"> {{dev.device.type_equip}}   </div>
+            <div class="col-sm-3"> {{dev.device.type_equip}}   </div>
             <div class="col-sm-3"> {{dev.device.manufacturer}} </div>
             <div class="col-sm-3"> {{dev.device.model_number}}
               {% if dev %}
               <div class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></div>
               {% else %}
-              <div class="glyphicon glyphicon-remove" aria-hidden="true"></div>
+              <div style="margin-right: 1em;" class="glyphicon glyphicon-remove pull-right" aria-hidden="true"></div>
               {% endif %}
             </div>
           </div>
@@ -71,7 +70,6 @@
           <h5>{{dev.device.device_name}} Questions:</h5>
             <ul class="list-group">
               {% for q in dev %}
-
                 <li class="list-group-item">
                   {{q.question.question_text}}
                   {% if q %}
@@ -84,11 +82,36 @@
               {% endfor %}
             </ul>
         </div>
-</div>
+
     {% endfor %}
   </ul>
 </ul>
-</div>
+
+<script>
+  function change_user(link) {
+    var new_user = prompt("Please enter the new user to assign to this location", "New User");
+    if (new_user != null) {
+      var data = {};
+      data['newuser'] = new_user;
+
+      console.log(JSON.stringify(data));
+
+      $.ajax({
+          url: "chusr/",
+          type: "POST",
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          success: function() {
+              location.reload();
+          },
+          error: function() {
+              alert('Server error. Could not change user.');
+          }
+      });
+    }
+  }
+
+</script>
 
 
 {% endblock %}

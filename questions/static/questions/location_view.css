@@ -2,10 +2,15 @@ ul {
   list-style: none;
 }
 
-.col-sm-3 {
-  vertical-align: middle;
-}
-
 .col-sm-3 .glyphicon {
   top: .11em;
+}
+
+.pad-left {
+  padding-left: 1em;
+}
+
+.device_list_header {
+  border: none;
+  margin-bottom: -0.5em;
 }
