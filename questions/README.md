@@ -1,5 +1,3 @@
-KYLE- 
-
 To use this the data submitted needs to be in JSON for testing purposes use POSTMAN, raw coding, with JSON/Application Type.
 
 Web Application URL is /questions/addlocation
